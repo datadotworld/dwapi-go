@@ -1,0 +1,26 @@
+{
+  "Deadline": "5m",
+  "Enable": [
+    "deadcode",
+    "errcheck",
+    "goconst",
+    "gofmt",
+    "gotype",
+    "ineffassign",
+    "interfacer",
+    "megacheck",
+    "misspell",
+    "structcheck",
+    "unconvert",
+    "unparam",
+    "varcheck",
+    "vet",
+    "vetshadow"
+  ],
+  "EnableGC": true,
+  "Sort": [
+    "path",
+    "line"
+  ],
+  "WarnUnmatchedDirective": true
+}

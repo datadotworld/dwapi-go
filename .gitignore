@@ -1,0 +1,5 @@
+.ds_store
+main.go
+*.iml
+
+.idea
