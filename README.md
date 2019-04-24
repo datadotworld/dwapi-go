@@ -33,7 +33,7 @@ import (
 func main() {
 	// new client
 	owner := "my-username"
-	token := "token from https://data.world/settings/advanced"
+	token := os.Getenv("DW_AUTH_TOKEN") // token from https://data.world/settings/advanced"
 	dw := dwapi.NewClient(owner, token)
 
 	// get info on the current user
