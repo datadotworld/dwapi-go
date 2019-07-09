@@ -26,7 +26,8 @@ type ProjectService struct {
 	client *Client
 }
 
-func (s *ProjectService) AddFilesFromURLs(owner, projectid string, body *FileCreateRequest) (response SuccessResponse, err error) {
+func (s *ProjectService) AddFilesFromURLs(owner, projectid string, body *FileCreateRequest) (
+	response SuccessResponse, err error) {
 	return s.client.File.AddFilesFromURLs(owner, projectid, body)
 }
 
@@ -34,14 +35,16 @@ func (s *ProjectService) Contributing() (response []ProjectSummaryResponse, err 
 	return s.client.User.ProjectsContributing()
 }
 
-func (s *ProjectService) Create(owner string, body *ProjectCreateOrUpdateRequest) (response ProjectCreateResponse, err error) {
+func (s *ProjectService) Create(owner string, body *ProjectCreateOrUpdateRequest) (
+	response ProjectCreateResponse, err error) {
 	endpoint := fmt.Sprintf("/projects/%s", owner)
 	headers := s.client.buildHeaders(POST, endpoint)
 	err = s.client.request(headers, body, &response)
 	return
 }
 
-func (s *ProjectService) CreateOrReplace(owner, projectid string, body *ProjectCreateOrUpdateRequest) (response SuccessResponse, err error) {
+func (s *ProjectService) CreateOrReplace(owner, projectid string, body *ProjectCreateOrUpdateRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/projects/%s/%s", owner, projectid)
 	headers := s.client.buildHeaders(PUT, endpoint)
 	err = s.client.request(headers, body, &response)
@@ -59,7 +62,8 @@ func (s *ProjectService) DownloadFile(owner, projectid, filename string) (respon
 	return s.client.File.Download(owner, projectid, filename)
 }
 
-func (s *ProjectService) DownloadAndSaveFile(owner, projectid, filename, path string) (response SuccessResponse, err error) {
+func (s *ProjectService) DownloadAndSaveFile(owner, projectid, filename, path string) (
+	response SuccessResponse, err error) {
 	return s.client.File.DownloadAndSave(owner, projectid, filename, path)
 }
 
@@ -75,7 +79,8 @@ func (s *ProjectService) Liked() (response []ProjectSummaryResponse, err error) 
 	return s.client.User.ProjectsLiked()
 }
 
-func (s *ProjectService) LinkDataset(owner, projectid, linkedDatasetOwner, linkedDatasetid string) (response SuccessResponse, err error) {
+func (s *ProjectService) LinkDataset(owner, projectid, linkedDatasetOwner, linkedDatasetid string) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/projects/%s/%s/linkedDatasets/%s/%s",
 		owner, projectid, linkedDatasetOwner, linkedDatasetid)
 	headers := s.client.buildHeaders(PUT, endpoint)
@@ -98,7 +103,8 @@ func (s *ProjectService) Retrieve(owner, projectid string) (response ProjectSumm
 	return
 }
 
-func (s *ProjectService) RetrieveVersion(owner, projectid, versionid string) (response ProjectSummaryResponse, err error) {
+func (s *ProjectService) RetrieveVersion(owner, projectid, versionid string) (
+	response ProjectSummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/projects/%s/%s/v/%s", owner, projectid, versionid)
 	headers := s.client.buildHeaders(GET, endpoint)
 	err = s.client.request(headers, nil, &response)
@@ -109,7 +115,8 @@ func (s *ProjectService) Sync(owner, projectid string) (response SuccessResponse
 	return s.client.File.Sync(owner, projectid)
 }
 
-func (s *ProjectService) UnlinkDataset(owner, projectid, linkedDatasetOwner, linkedDatasetid string) (response SuccessResponse, err error) {
+func (s *ProjectService) UnlinkDataset(owner, projectid, linkedDatasetOwner, linkedDatasetid string) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/projects/%s/%s/linkedDatasets/%s/%s",
 		owner, projectid, linkedDatasetOwner, linkedDatasetid)
 	headers := s.client.buildHeaders(DELETE, endpoint)
@@ -117,13 +124,15 @@ func (s *ProjectService) UnlinkDataset(owner, projectid, linkedDatasetOwner, lin
 	return
 }
 
-func (s *ProjectService) Update(owner, id string, body *ProjectCreateOrUpdateRequest) (response SuccessResponse, err error) {
+func (s *ProjectService) Update(owner, id string, body *ProjectCreateOrUpdateRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/projects/%s/%s", owner, id)
 	headers := s.client.buildHeaders(PATCH, endpoint)
 	err = s.client.request(headers, body, &response)
 	return
 }
 
-func (s *ProjectService) UploadFile(owner, id, filename, path string, expandArchive bool) (response SuccessResponse, err error) {
+func (s *ProjectService) UploadFile(owner, id, filename, path string, expandArchive bool) (
+	response SuccessResponse, err error) {
 	return s.client.File.Upload(owner, id, filename, path, expandArchive)
 }

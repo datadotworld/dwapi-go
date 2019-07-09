@@ -238,28 +238,47 @@ type ProjectSummaryResponse struct {
 	Visibility     string                         `json:"visibility"`
 }
 
+type QueryCreateRequest struct {
+	Name      string `json:"name"`
+	Content   string `json:"content"`
+	Language  string `json:"language"`
+	Published bool   `json:"published,omitempty"`
+}
+
+type QueryParameter struct {
+	Type     string `json:"type,omitempty"`
+	Datatype string `json:"datatype,omitempty"`
+}
+
 type QuerySummaryResponse struct {
-	Body     string `json:"body,omitempty"`
-	Created  string `json:"created,omitempty"`
-	ID       string `json:"id,omitempty"`
-	Language string `json:"language,omitempty"`
-	Name     string `json:"name,omitempty"`
-	Owner    string `json:"owner,omitempty"`
-	Updated  string `json:"updated,omitempty"`
-	Version  string `json:"version,omitempty"`
+	Body       string                    `json:"body,omitempty"`
+	Created    string                    `json:"created,omitempty"`
+	ID         string                    `json:"id,omitempty"`
+	Language   string                    `json:"language,omitempty"`
+	Name       string                    `json:"name,omitempty"`
+	Owner      string                    `json:"owner,omitempty"`
+	Updated    string                    `json:"updated,omitempty"`
+	Version    string                    `json:"version,omitempty"`
+	Parameters map[string]QueryParameter `json:"parameters,omitempty"`
+}
+
+type QueryUpdateRequest struct {
+	Name      string `json:"name"`
+	Content   string `json:"content"`
+	Published bool   `json:"published,omitempty"`
 }
 
 type SavedQueryExecutionRequest struct {
-	Parameters         interface{} `json:"parameters,omitempty"`
-	IncludeTableSchema bool        `json:"includeTableSchema,omitempty"`
-	MaxRows            float64     `json:"maxRows,omitempty"`
+	Parameters         map[string]string `json:"parameters,omitempty"`
+	IncludeTableSchema bool              `json:"includeTableSchema,omitempty"`
+	MaxRows            float64           `json:"maxRows,omitempty"`
 }
 
-type SparqlQueryRequest struct {
+type SPARQLQueryRequest struct {
 	Query string `json:"query"`
 }
 
-type SqlQueryRequest struct {
+type SQLQueryRequest struct {
 	Query              string `json:"query"`
 	IncludeTableSchema bool   `json:"includeTableSchema,omitempty"`
 }

@@ -25,6 +25,122 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestQueryService_CreateSavedQueryInDataset(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := querySummaryResponse
+
+	body := QueryCreateRequest{
+		Name:      "Metadata",
+		Content:   "SELECT * FROM Tables",
+		Language:  "SQL",
+		Published: true,
+	}
+	owner := client.Owner
+	datasetid := "my-awesome-dataset"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"body": "SELECT * FROM Tables",
+			"created": "2018-08-03T15:56:41.777Z",
+			"id": "unique.id",
+			"language": "SQL",
+			"name": "Metadata",
+			"owner": "%s",
+			"updated": "2018-08-03T15:56:41.777Z",
+			"version": "some.version.identified"
+		}`, owner)
+	}
+	endpoint := fmt.Sprintf("/datasets/%s/%s/queries", owner, datasetid)
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.Query.CreateSavedQueryInDataset(owner, datasetid, &body)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
+func TestQueryService_CreateSavedQueryInProject(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := querySummaryResponse
+
+	body := QueryCreateRequest{
+		Name:      "Metadata",
+		Content:   "SELECT * FROM Tables",
+		Language:  "SQL",
+		Published: true,
+	}
+	owner := client.Owner
+	projectid := "my-awesome-project"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"body": "SELECT * FROM Tables",
+			"created": "2018-08-03T15:56:41.777Z",
+			"id": "unique.id",
+			"language": "SQL",
+			"name": "Metadata",
+			"owner": "%s",
+			"updated": "2018-08-03T15:56:41.777Z",
+			"version": "some.version.identified"
+		}`, owner)
+	}
+	endpoint := fmt.Sprintf("/projects/%s/%s/queries", owner, projectid)
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.Query.CreateSavedQueryInProject(owner, projectid, &body)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
+func TestDatasetService_DeleteSavedQueryInDataset(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := successResponse
+
+	owner := client.Owner
+	datasetid := "my-awesome-dataset"
+	queryid := "my-saved-query"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, DELETE, "Expected method 'DELETE', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"message": "test.message"
+		}`)
+	}
+	endpoint := fmt.Sprintf("/datasets/%s/%s/queries/%s", owner, datasetid, queryid)
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.Query.DeleteSavedQueryInDataset(owner, datasetid, queryid)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
+func TestDatasetService_DeleteSavedQueryInProject(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := successResponse
+
+	owner := client.Owner
+	projectid := "my-awesome-dataset"
+	queryid := "my-saved-query"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, DELETE, "Expected method 'DELETE', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"message": "test.message"
+		}`)
+	}
+	endpoint := fmt.Sprintf("/projects/%s/%s/queries/%s", owner, projectid, queryid)
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.Query.DeleteSavedQueryInProject(owner, projectid, queryid)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
 func TestQueryService_ListQueriesAssociatedWithDataset(t *testing.T) {
 	setup()
 	defer teardown()
@@ -143,6 +259,74 @@ func TestQueryService_RetrieveVersion(t *testing.T) {
 	endpoint := fmt.Sprintf("/queries/%s/v/%s", queryid, versionid)
 	mux.HandleFunc(endpoint, handler)
 	got, err := client.Query.RetrieveVersion(queryid, versionid)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
+func TestQueryService_UpdateSavedQueryInDataset(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := querySummaryResponse
+
+	body := QueryUpdateRequest{
+		Name:    "Metadata",
+		Content: "SELECT * FROM Table",
+	}
+	owner := client.Owner
+	datasetid := "my-awesome-dataset"
+	queryid := "unique.id"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, PUT, "Expected method 'PUT', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"body": "SELECT * FROM Tables",
+			"created": "2018-08-03T15:56:41.777Z",
+			"id": "unique.id",
+			"language": "SQL",
+			"name": "Metadata",
+			"owner": "%s",
+			"updated": "2018-08-03T15:56:41.777Z",
+			"version": "some.version.identified"
+		}`, owner)
+	}
+	endpoint := fmt.Sprintf("/datasets/%s/%s/queries/%s", owner, datasetid, queryid)
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.Query.UpdateSavedQueryInDataset(owner, datasetid, queryid, &body)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
+func TestQueryService_UpdateSavedQueryInProject(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := querySummaryResponse
+
+	body := QueryUpdateRequest{
+		Name:    "Metadata",
+		Content: "SELECT * FROM Table",
+	}
+	owner := client.Owner
+	datasetid := "my-awesome-dataset"
+	queryid := "unique.id"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, PUT, "Expected method 'PUT', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"body": "SELECT * FROM Tables",
+			"created": "2018-08-03T15:56:41.777Z",
+			"id": "unique.id",
+			"language": "SQL",
+			"name": "Metadata",
+			"owner": "%s",
+			"updated": "2018-08-03T15:56:41.777Z",
+			"version": "some.version.identified"
+		}`, owner)
+	}
+	endpoint := fmt.Sprintf("/projects/%s/%s/queries/%s", owner, datasetid, queryid)
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.Query.UpdateSavedQueryInProject(owner, datasetid, queryid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}

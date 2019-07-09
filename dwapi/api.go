@@ -109,7 +109,7 @@ func (c *Client) encodeBody(body interface{}) (io.Reader, error) {
 	return b, nil
 }
 
-func (c *Client) rawRequest(headers *headers, body io.Reader) (io.Reader, error) {
+func (c *Client) rawRequest(headers *headers, body io.Reader) (io.ReadCloser, error) {
 	url := c.BaseURL + headers.Endpoint
 
 	r, err := http.NewRequest(headers.Method, url, body)
@@ -139,7 +139,6 @@ func (c *Client) rawRequest(headers *headers, body io.Reader) (io.Reader, error)
 	if response.StatusCode != http.StatusOK {
 		return nil, errors.New(response.Status)
 	}
-
 	return response.Body, nil
 }
 
@@ -154,7 +153,9 @@ func (c *Client) request(headers *headers, body, response interface{}) (err erro
 		return
 	}
 
-	return c.unmarshal(r, response)
+	err = c.unmarshal(r, response)
+	r.Close()
+	return
 }
 
 func (c *Client) requestMultiplePages(endpoint string, response interface{}) error {

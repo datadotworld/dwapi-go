@@ -32,7 +32,8 @@ func (s *DoiService) Associate(owner, datasetid, doi string) (response SuccessRe
 	return
 }
 
-func (s *DoiService) AssociateWithVersion(owner, datasetid, versionid, doi string) (response SuccessResponse, err error) {
+func (s *DoiService) AssociateWithVersion(owner, datasetid, versionid, doi string) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/v/%s/dois/%s", owner, datasetid, versionid, doi)
 	headers := s.client.buildHeaders(PUT, endpoint)
 	err = s.client.request(headers, nil, &response)
@@ -46,7 +47,8 @@ func (s *DoiService) Delete(owner, datasetid, doi string) (response SuccessRespo
 	return
 }
 
-func (s *DoiService) DeleteAssociatedWithVersion(owner, datasetid, versionid, doi string) (response SuccessResponse, err error) {
+func (s *DoiService) DeleteAssociatedWithVersion(owner, datasetid, versionid, doi string) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/v/%s/dois/%s", owner, datasetid, versionid, doi)
 	headers := s.client.buildHeaders(DELETE, endpoint)
 	err = s.client.request(headers, nil, &response)

@@ -26,7 +26,40 @@ type QueryService struct {
 	client *Client
 }
 
-func (s *QueryService) ExecuteSavedQuery(queryid, acceptType string, body *SavedQueryExecutionRequest) (response io.Reader, err error) {
+func (s *QueryService) CreateSavedQueryInDataset(owner, datasetid string, body *QueryCreateRequest) (
+	response QuerySummaryResponse, err error) {
+	endpoint := fmt.Sprintf("/datasets/%s/%s/queries", owner, datasetid)
+	headers := s.client.buildHeaders(POST, endpoint)
+	err = s.client.request(headers, body, &response)
+	return
+}
+
+func (s *QueryService) CreateSavedQueryInProject(owner, projectid string, body *QueryCreateRequest) (
+	response QuerySummaryResponse, err error) {
+	endpoint := fmt.Sprintf("/projects/%s/%s/queries", owner, projectid)
+	headers := s.client.buildHeaders(POST, endpoint)
+	err = s.client.request(headers, body, &response)
+	return
+}
+
+func (s *QueryService) DeleteSavedQueryInDataset(owner, datasetid, queryid string) (
+	response SuccessResponse, err error) {
+	endpoint := fmt.Sprintf("/datasets/%s/%s/queries/%s", owner, datasetid, queryid)
+	headers := s.client.buildHeaders(DELETE, endpoint)
+	err = s.client.request(headers, nil, &response)
+	return
+}
+
+func (s *QueryService) DeleteSavedQueryInProject(owner, projectid, queryid string) (
+	response SuccessResponse, err error) {
+	endpoint := fmt.Sprintf("/projects/%s/%s/queries/%s", owner, projectid, queryid)
+	headers := s.client.buildHeaders(DELETE, endpoint)
+	err = s.client.request(headers, nil, &response)
+	return
+}
+
+func (s *QueryService) ExecuteSavedQuery(queryid, acceptType string, body *SavedQueryExecutionRequest) (
+	response io.ReadCloser, err error) {
 	endpoint := fmt.Sprintf("/queries/%s/results", queryid)
 	headers := s.client.buildHeaders(POST, endpoint)
 	headers.AcceptType = acceptType
@@ -38,7 +71,8 @@ func (s *QueryService) ExecuteSavedQuery(queryid, acceptType string, body *Saved
 	return s.client.rawRequest(headers, b)
 }
 
-func (s *QueryService) ExecuteSavedQueryAndSave(queryid, acceptType, path string, body *SavedQueryExecutionRequest) (response SuccessResponse, err error) {
+func (s *QueryService) ExecuteSavedQueryAndSave(queryid, acceptType, path string, body *SavedQueryExecutionRequest) (
+	response SuccessResponse, err error) {
 	r, err := s.ExecuteSavedQuery(queryid, acceptType, body)
 	if err != nil {
 		return
@@ -53,7 +87,8 @@ func (s *QueryService) ExecuteSavedQueryAndSave(queryid, acceptType, path string
 	}, nil
 }
 
-func (s *QueryService) ExecuteSPARQL(owner, id, acceptType string, body *SparqlQueryRequest) (response io.Reader, err error) {
+func (s *QueryService) ExecuteSPARQL(owner, id, acceptType string, body *SPARQLQueryRequest) (
+	response io.ReadCloser, err error) {
 	endpoint := fmt.Sprintf("/sparql/%s/%s", owner, id)
 	headers := s.client.buildHeaders(POST, endpoint)
 	headers.AcceptType = acceptType
@@ -65,7 +100,8 @@ func (s *QueryService) ExecuteSPARQL(owner, id, acceptType string, body *SparqlQ
 	return s.client.rawRequest(headers, b)
 }
 
-func (s *QueryService) ExecuteSPARQLAndSave(owner, id, acceptType, path string, body *SparqlQueryRequest) (response SuccessResponse, err error) {
+func (s *QueryService) ExecuteSPARQLAndSave(owner, id, acceptType, path string, body *SPARQLQueryRequest) (
+	response SuccessResponse, err error) {
 	r, err := s.ExecuteSPARQL(owner, id, acceptType, body)
 	if err != nil {
 		return
@@ -80,7 +116,8 @@ func (s *QueryService) ExecuteSPARQLAndSave(owner, id, acceptType, path string, 
 	}, nil
 }
 
-func (s *QueryService) ExecuteSQL(owner, id, acceptType string, body *SqlQueryRequest) (response io.Reader, err error) {
+func (s *QueryService) ExecuteSQL(owner, id, acceptType string, body *SQLQueryRequest) (
+	response io.ReadCloser, err error) {
 	endpoint := fmt.Sprintf("/sql/%s/%s", owner, id)
 	headers := s.client.buildHeaders(POST, endpoint)
 	headers.AcceptType = acceptType
@@ -92,7 +129,8 @@ func (s *QueryService) ExecuteSQL(owner, id, acceptType string, body *SqlQueryRe
 	return s.client.rawRequest(headers, b)
 }
 
-func (s *QueryService) ExecuteSQLAndSave(owner, id, acceptType, path string, body *SqlQueryRequest) (response SuccessResponse, err error) {
+func (s *QueryService) ExecuteSQLAndSave(owner, id, acceptType, path string, body *SQLQueryRequest) (
+	response SuccessResponse, err error) {
 	r, err := s.ExecuteSQL(owner, id, acceptType, body)
 	if err != nil {
 		return
@@ -107,7 +145,8 @@ func (s *QueryService) ExecuteSQLAndSave(owner, id, acceptType, path string, bod
 	}, nil
 }
 
-func (s *QueryService) ListQueriesAssociatedWithDataset(owner, datasetid string) (response []QuerySummaryResponse, err error) {
+func (s *QueryService) ListQueriesAssociatedWithDataset(owner, datasetid string) (
+	response []QuerySummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/queries", owner, datasetid)
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
 		return nil, err
@@ -115,7 +154,8 @@ func (s *QueryService) ListQueriesAssociatedWithDataset(owner, datasetid string)
 	return
 }
 
-func (s *QueryService) ListQueriesAssociatedWithProject(owner, projectid string) (response []QuerySummaryResponse, err error) {
+func (s *QueryService) ListQueriesAssociatedWithProject(owner, projectid string) (
+	response []QuerySummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/projects/%s/%s/queries", owner, projectid)
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
 		return nil, err
@@ -134,5 +174,21 @@ func (s *QueryService) RetrieveVersion(queryid, versionid string) (response Quer
 	endpoint := fmt.Sprintf("/queries/%s/v/%s", queryid, versionid)
 	headers := s.client.buildHeaders(GET, endpoint)
 	err = s.client.request(headers, nil, &response)
+	return
+}
+
+func (s *QueryService) UpdateSavedQueryInDataset(owner, datasetid, queryid string, body *QueryUpdateRequest) (
+	response QuerySummaryResponse, err error) {
+	endpoint := fmt.Sprintf("/datasets/%s/%s/queries/%s", owner, datasetid, queryid)
+	headers := s.client.buildHeaders(PUT, endpoint)
+	err = s.client.request(headers, body, &response)
+	return
+}
+
+func (s *QueryService) UpdateSavedQueryInProject(owner, datasetid, queryid string, body *QueryUpdateRequest) (
+	response QuerySummaryResponse, err error) {
+	endpoint := fmt.Sprintf("/projects/%s/%s/queries/%s", owner, datasetid, queryid)
+	headers := s.client.buildHeaders(PUT, endpoint)
+	err = s.client.request(headers, body, &response)
 	return
 }

@@ -27,7 +27,8 @@ type FileService struct {
 	client *Client
 }
 
-func (s *FileService) AddFilesFromURLs(owner, id string, body *FileCreateRequest) (response SuccessResponse, err error) {
+func (s *FileService) AddFilesFromURLs(owner, id string, body *FileCreateRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/files", owner, id)
 	headers := s.client.buildHeaders(POST, endpoint)
 	err = s.client.request(headers, body, &response)
@@ -41,7 +42,7 @@ func (s *FileService) Delete(owner, id, filename string) (response SuccessRespon
 	return
 }
 
-func (s *FileService) Download(owner, id, filename string) (response io.Reader, err error) {
+func (s *FileService) Download(owner, id, filename string) (response io.ReadCloser, err error) {
 	endpoint := fmt.Sprintf("/file_download/%s/%s/%s", owner, id, filename)
 	headers := s.client.buildHeaders(GET, endpoint)
 	return s.client.rawRequest(headers, nil)
@@ -62,7 +63,7 @@ func (s *FileService) DownloadAndSave(owner, id, filename, path string) (respons
 	}, nil
 }
 
-func (s *FileService) DownloadDataset(owner, id string) (response io.Reader, err error) {
+func (s *FileService) DownloadDataset(owner, id string) (response io.ReadCloser, err error) {
 	endpoint := fmt.Sprintf("/download/%s/%s", owner, id)
 	headers := s.client.buildHeaders(GET, endpoint)
 	return s.client.rawRequest(headers, nil)
@@ -90,11 +91,12 @@ func (s *FileService) Sync(owner, id string) (response SuccessResponse, err erro
 	return
 }
 
-func (s *FileService) UploadStream(owner, id, filename string, body io.Reader, expandArchive bool) (response SuccessResponse, err error) {
+func (s *FileService) UploadStream(owner, id, filename string, body io.Reader, expandArchive bool) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/uploads/%s/%s/files/%s", owner, id, filename)
 
 	if expandArchive {
-		endpoint = endpoint + "?expandArchive=true"
+		endpoint += "?expandArchive=true"
 	}
 
 	headers := s.client.buildHeaders(PUT, endpoint)
@@ -106,10 +108,12 @@ func (s *FileService) UploadStream(owner, id, filename string, body io.Reader, e
 	}
 
 	err = s.client.unmarshal(r, &response)
+	r.Close()
 	return
 }
 
-func (s *FileService) Upload(owner, id, filename, path string, expandArchive bool) (response SuccessResponse, err error) {
+func (s *FileService) Upload(owner, id, filename, path string, expandArchive bool) (
+	response SuccessResponse, err error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return

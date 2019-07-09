@@ -37,6 +37,7 @@ func (s *StreamService) Append(owner, id, streamid string, body io.Reader) (resp
 	}
 
 	err = s.client.unmarshal(r, &response)
+	r.Close()
 	return
 }
 
@@ -54,7 +55,8 @@ func (s *StreamService) RetrieveSchema(owner, id, streamid string) (response Str
 	return
 }
 
-func (s *StreamService) SetOrUpdateSchema(owner, id, streamid string, body *StreamSchemaUpdateRequest) (response SuccessResponse, err error) {
+func (s *StreamService) SetOrUpdateSchema(owner, id, streamid string, body *StreamSchemaUpdateRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s/schema", owner, id, streamid)
 	headers := s.client.buildHeaders(PATCH, endpoint)
 	err = s.client.request(headers, body, &response)

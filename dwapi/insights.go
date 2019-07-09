@@ -25,7 +25,8 @@ type InsightService struct {
 	client *Client
 }
 
-func (s *InsightService) Create(owner, projectid string, body *InsightCreateRequest) (response InsightCreateResponse, err error) {
+func (s *InsightService) Create(owner, projectid string, body *InsightCreateRequest) (
+	response InsightCreateResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s", owner, projectid)
 	headers := s.client.buildHeaders(POST, endpoint)
 	err = s.client.request(headers, body, &response)
@@ -47,7 +48,8 @@ func (s *InsightService) List(owner, projectid string) (response []InsightSummar
 	return
 }
 
-func (s *InsightService) Replace(owner, projectid, insightid string, body *InsightReplaceRequest) (response SuccessResponse, err error) {
+func (s *InsightService) Replace(owner, projectid, insightid string, body *InsightReplaceRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)
 	headers := s.client.buildHeaders(PUT, endpoint)
 	err = s.client.request(headers, body, &response)
@@ -61,14 +63,16 @@ func (s *InsightService) Retrieve(owner, projectid, insightid string) (response 
 	return
 }
 
-func (s *InsightService) RetrieveVersion(owner, projectid, insightid, versionid string) (response InsightSummaryResponse, err error) {
+func (s *InsightService) RetrieveVersion(owner, projectid, insightid, versionid string) (
+	response InsightSummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s/v/%s", owner, projectid, insightid, versionid)
 	headers := s.client.buildHeaders(GET, endpoint)
 	err = s.client.request(headers, nil, &response)
 	return
 }
 
-func (s *InsightService) Update(owner, projectid, insightid string, body *InsightUpdateRequest) (response SuccessResponse, err error) {
+func (s *InsightService) Update(owner, projectid, insightid string, body *InsightUpdateRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)
 	headers := s.client.buildHeaders(PATCH, endpoint)
 	err = s.client.request(headers, body, &response)

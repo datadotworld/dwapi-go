@@ -26,7 +26,8 @@ type DatasetService struct {
 	client *Client
 }
 
-func (s *DatasetService) AddFilesFromURLs(owner, datasetid string, body *FileCreateRequest) (response SuccessResponse, err error) {
+func (s *DatasetService) AddFilesFromURLs(owner, datasetid string, body *FileCreateRequest) (
+	response SuccessResponse, err error) {
 	return s.client.File.AddFilesFromURLs(owner, datasetid, body)
 }
 
@@ -34,7 +35,8 @@ func (s *DatasetService) AssociateDOI(owner, datasetid, doi string) (response Su
 	return s.client.DOI.Associate(owner, datasetid, doi)
 }
 
-func (s *DatasetService) AssociateDOIWithVersion(owner, datasetid, versionid, doi string) (response SuccessResponse, err error) {
+func (s *DatasetService) AssociateDOIWithVersion(owner, datasetid, versionid, doi string) (
+	response SuccessResponse, err error) {
 	return s.client.DOI.AssociateWithVersion(owner, datasetid, versionid, doi)
 }
 
@@ -49,7 +51,8 @@ func (s *DatasetService) Create(owner string, body *DatasetCreateRequest) (respo
 	return
 }
 
-func (s *DatasetService) CreateOrReplace(owner, id string, body *DatasetReplaceRequest) (response SuccessResponse, err error) {
+func (s *DatasetService) CreateOrReplace(owner, id string, body *DatasetReplaceRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s", owner, id)
 	headers := s.client.buildHeaders(PUT, endpoint)
 	err = s.client.request(headers, body, &response)
@@ -67,7 +70,8 @@ func (s *DatasetService) DeleteDOI(owner, datasetid, doi string) (response Succe
 	return s.client.DOI.Delete(owner, datasetid, doi)
 }
 
-func (s *DatasetService) DeleteDOIAssociatedWithVersion(owner, datasetid, versionid, doi string) (response SuccessResponse, err error) {
+func (s *DatasetService) DeleteDOIAssociatedWithVersion(owner, datasetid, versionid, doi string) (
+	response SuccessResponse, err error) {
 	return s.client.DOI.DeleteAssociatedWithVersion(owner, datasetid, versionid, doi)
 }
 
@@ -75,7 +79,8 @@ func (s *DatasetService) DownloadFile(owner, datasetid, filename string) (respon
 	return s.client.File.Download(owner, datasetid, filename)
 }
 
-func (s *DatasetService) DownloadAndSaveFile(owner, datasetid, filename, path string) (response SuccessResponse, err error) {
+func (s *DatasetService) DownloadAndSaveFile(owner, datasetid, filename, path string) (
+	response SuccessResponse, err error) {
 	return s.client.File.DownloadAndSave(owner, datasetid, filename, path)
 }
 
@@ -106,7 +111,8 @@ func (s *DatasetService) Retrieve(owner, datasetid string) (response DatasetSumm
 	return
 }
 
-func (s *DatasetService) RetrieveVersion(owner, datasetid, versionid string) (response DatasetSummaryResponse, err error) {
+func (s *DatasetService) RetrieveVersion(owner, datasetid, versionid string) (
+	response DatasetSummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/v/%s", owner, datasetid, versionid)
 	headers := s.client.buildHeaders(GET, endpoint)
 	err = s.client.request(headers, nil, &response)
@@ -124,6 +130,7 @@ func (s *DatasetService) Update(owner, id string, body *DatasetUpdateRequest) (r
 	return
 }
 
-func (s *DatasetService) UploadFile(owner, id, filename, path string, expandArchive bool) (response SuccessResponse, err error) {
+func (s *DatasetService) UploadFile(owner, id, filename, path string, expandArchive bool) (
+	response SuccessResponse, err error) {
 	return s.client.File.Upload(owner, id, filename, path, expandArchive)
 }

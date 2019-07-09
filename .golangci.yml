@@ -1,0 +1,11 @@
+linters:
+  enable-all: true
+  disable:
+    - bodyclose
+    - gochecknoglobals
+    - goconst
+
+issues:
+  exclude-rules:
+    - text: G201
+      linters: gosec

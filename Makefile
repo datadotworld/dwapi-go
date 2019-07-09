@@ -8,7 +8,7 @@ fmtcheck:
 	@gofmt -l -s ./$(PKG_NAME)
 
 lint:
-	@gometalinter ./$(PKG_NAME)
+	@golangci-lint run ./$(PKG_NAME)
 
 test: fmtcheck
 	@go test ./$(PKG_NAME) -timeout=30s -parallel=4 -cover

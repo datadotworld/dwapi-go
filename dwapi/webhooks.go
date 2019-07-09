@@ -54,21 +54,24 @@ func (s *WebhookService) RetrieveProjectSubscription(owner, projectid string) (r
 	return
 }
 
-func (s *WebhookService) SubscribeToAccount(user string, body *SubscriptionCreateRequest) (response SuccessResponse, err error) {
+func (s *WebhookService) SubscribeToAccount(user string, body *SubscriptionCreateRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/users/%s", user)
 	headers := s.client.buildHeaders(PUT, endpoint)
 	err = s.client.request(headers, body, &response)
 	return
 }
 
-func (s *WebhookService) SubscribeToDataset(owner, datasetid string, body *SubscriptionCreateRequest) (response SuccessResponse, err error) {
+func (s *WebhookService) SubscribeToDataset(owner, datasetid string, body *SubscriptionCreateRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/datasets/%s/%s", owner, datasetid)
 	headers := s.client.buildHeaders(PUT, endpoint)
 	err = s.client.request(headers, body, &response)
 	return
 }
 
-func (s *WebhookService) SubscribeToProject(owner, projectid string, body *SubscriptionCreateRequest) (response SuccessResponse, err error) {
+func (s *WebhookService) SubscribeToProject(owner, projectid string, body *SubscriptionCreateRequest) (
+	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/projects/%s/%s", owner, projectid)
 	headers := s.client.buildHeaders(PUT, endpoint)
 	err = s.client.request(headers, body, &response)
