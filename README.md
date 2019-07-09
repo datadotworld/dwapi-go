@@ -1,5 +1,7 @@
 # dwapi-go
 
+[![GoDoc](https://godoc.org/github.com/datadotworld/dwapi-go/dwapi?status.svg)](https://godoc.org/github.com/datadotworld/dwapi-go/dwapi)
+
 This package makes it easy to use [data.world's REST API](https://apidocs.data.world/api) with Go.
 
 Users can:
@@ -14,8 +16,9 @@ go get github.com/datadotworld/dwapi-go/dwapi
 ```
 
 ## Usage
+The full package documentation is available at https://godoc.org/github.com/datadotworld/dwapi-go/dwapi.
 
-Please see our [API documentation](https://apidocs.data.world/api) for specifics on the endpoints.
+You can also check out the API documentation at https://apidocs.data.world/api for specifics on the endpoints.
 
 ```go
 package main
