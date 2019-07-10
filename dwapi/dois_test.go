@@ -31,7 +31,7 @@ func TestDoiService_Associate(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	doi := "10.1109/5.771073"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +54,7 @@ func TestDoiService_AssociateWithVersion(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	versionid := "a.dataset.version"
 	doi := "10.1109/5.771073"
@@ -78,7 +78,7 @@ func TestDoiService_DeleteAssociatedWithVersion(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	versionid := "a.dataset.version"
 	doi := "10.1109/5.771073"
@@ -102,7 +102,7 @@ func TestDoiService_Delete(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	doi := "10.1109/5.771073"
 	handler := func(w http.ResponseWriter, r *http.Request) {

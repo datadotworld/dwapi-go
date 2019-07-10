@@ -58,7 +58,7 @@ func TestStreamService_Append(t *testing.T) {
 	b := bytes.Join(ls, []byte("\n"))
 
 	body := bytes.NewReader(b)
-	owner := client.Owner
+	owner := testClientOwner
 	id := "my-awesome-dataset"
 	streamid := "arbitrary.file"
 
@@ -82,7 +82,7 @@ func TestStreamService_Delete(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	id := "my-awesome-dataset"
 	streamid := "arbitrary.file"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -108,7 +108,7 @@ func TestStreamService_RetrieveSchema(t *testing.T) {
 		SequenceField:    "creation_time",
 	}
 
-	owner := client.Owner
+	owner := testClientOwner
 	id := "my-awesome-dataset"
 	streamid := "arbitrary.file"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -137,7 +137,7 @@ func TestStreamService_SetOrUpdateSchema(t *testing.T) {
 		SequenceField:    "creation_time",
 		UpdateMethod:     "TRUNCATE",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	id := "my-awesome-dataset"
 	streamid := "arbitrary.file"
 

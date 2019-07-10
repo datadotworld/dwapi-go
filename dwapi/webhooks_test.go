@@ -75,7 +75,7 @@ func TestWebhookService_RetrieveDatasetSubscription(t *testing.T) {
 
 	want := subscriptionSummaryResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -97,7 +97,7 @@ func TestWebhookService_RetrieveProjectSubscription(t *testing.T) {
 
 	want := subscriptionSummaryResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)

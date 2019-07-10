@@ -35,9 +35,8 @@ import (
 
 func main() {
 	// new client
-	owner := "my-username"
-	token := os.Getenv("DW_AUTH_TOKEN") // token from https://data.world/settings/advanced"
-	dw := dwapi.NewClient(owner, token)
+	token := os.Getenv("DW_AUTH_TOKEN")
+	dw := dwapi.NewClient(token)
 
 	// get info on the current user
 	user, err := dw.User.Self()
@@ -55,6 +54,7 @@ func main() {
 	*/
 
 	// create a new dataset
+	owner := "my-username"
 	request := dwapi.DatasetCreateRequest{
 		Title:       "My Awesome Dataset",
 		Description: "A short description",

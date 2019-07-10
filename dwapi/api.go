@@ -47,7 +47,6 @@ const (
 
 type Client struct {
 	BaseURL string
-	Owner   string
 	Token   string
 
 	Dataset *DatasetService
@@ -74,10 +73,9 @@ type paginatedResponse struct {
 	Records       []interface{} `json:"records"`
 }
 
-func NewClient(owner, token string) *Client {
+func NewClient(token string) *Client {
 	c := &Client{
 		BaseURL: defaultBaseURL,
-		Owner:   owner,
 		Token:   token,
 	}
 	c.Dataset = &DatasetService{c}

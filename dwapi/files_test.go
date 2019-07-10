@@ -31,7 +31,7 @@ func TestFileService_Delete(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	id := "my-awesome-dataset"
 	filename := "arbitrary.file"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +54,7 @@ func TestFileService_Sync(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	id := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)

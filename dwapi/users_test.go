@@ -31,7 +31,7 @@ func TestUserService_DatasetsOwned(t *testing.T) {
 
 	want := datasetSummaryResponses
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -65,7 +65,7 @@ func TestUserService_ProjectsOwned(t *testing.T) {
 
 	want := projectSummaryResponses
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-project"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -127,7 +127,7 @@ func TestUserService_Self(t *testing.T) {
 
 	want := UserInfoResponse{
 		DisplayName: "Tim Notes",
-		ID:          "tim-notes",
+		ID:          testClientOwner,
 		Created:     "2016-07-13T23:38:44.026Z",
 		Updated:     "2018-08-03T14:56:41.777Z",
 	}

@@ -39,11 +39,11 @@ func TestProjectService_Create(t *testing.T) {
 		LinkedDatasets: []LinkedDatasetCreateOrUpdateRequest{
 			{
 				ID:    "my-awesome-dataset",
-				Owner: "tim-notes",
+				Owner: testClientOwner,
 			},
 		},
 	}
-	owner := client.Owner
+	owner := testClientOwner
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
@@ -71,11 +71,11 @@ func TestProjectService_CreateOrReplace(t *testing.T) {
 		LinkedDatasets: []LinkedDatasetCreateOrUpdateRequest{
 			{
 				ID:    "my-awesome-dataset",
-				Owner: "tim-notes",
+				Owner: testClientOwner,
 			},
 		},
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, PUT, "Expected method 'PUT', got %s", r.Method)
@@ -97,7 +97,7 @@ func TestProjectService_Delete(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, DELETE, "Expected method 'DELETE', got %s", r.Method)
@@ -119,9 +119,9 @@ func TestProjectService_Link(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
-	linkedDatasetOwner := client.Owner
+	linkedDatasetOwner := testClientOwner
 	linkedDatasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, PUT, "Expected method 'PUT', got %s", r.Method)
@@ -144,7 +144,7 @@ func TestProjectService_Retrieve(t *testing.T) {
 
 	want := projectSummaryResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -174,7 +174,7 @@ func TestProjectService_RetrieveVersion(t *testing.T) {
 
 	want := projectSummaryResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	versionid := "some.version.identifier"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -205,7 +205,7 @@ func TestProjectService_Sync(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -227,9 +227,9 @@ func TestProjectService_Unlink(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
-	linkedDatasetOwner := client.Owner
+	linkedDatasetOwner := testClientOwner
 	linkedDatasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, DELETE, "Expected method 'DELETE', got %s", r.Method)
@@ -256,7 +256,7 @@ func TestProjectService_Update(t *testing.T) {
 		Title:      "My Awesome Project 2.0",
 		Visibility: "PRIVATE",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
