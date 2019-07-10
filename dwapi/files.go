@@ -27,7 +27,7 @@ type FileService struct {
 	client *Client
 }
 
-func (s *FileService) AddFilesFromURLs(owner, id string, body *FileCreateRequest) (
+func (s *FileService) AddFilesFromURLs(owner, id string, body *[]FileCreateRequest) (
 	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/files", owner, id)
 	headers := s.client.buildHeaders(POST, endpoint)
