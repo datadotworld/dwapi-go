@@ -26,7 +26,7 @@ type ProjectService struct {
 	client *Client
 }
 
-func (s *ProjectService) AddFilesFromURLs(owner, projectid string, body *FileCreateRequest) (
+func (s *ProjectService) AddFilesFromURLs(owner, projectid string, body *[]FileCreateRequest) (
 	response SuccessResponse, err error) {
 	return s.client.File.AddFilesFromURLs(owner, projectid, body)
 }
