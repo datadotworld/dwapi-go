@@ -39,7 +39,7 @@ func TestInsightService_Create(t *testing.T) {
 		},
 		Title: "My Awesome Insight",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -62,7 +62,7 @@ func TestInsightService_Delete(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	insightid := "my-awesome-insight"
 
@@ -86,7 +86,7 @@ func TestInsightService_List(t *testing.T) {
 
 	want := insightSummaryResponses
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	insightid := "my-awesome-insight"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -124,7 +124,7 @@ func TestProjectService_ReplaceInsight(t *testing.T) {
 		},
 		Title: "My Awesome Insight",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	insightid := "my-awesome-insight"
 
@@ -148,7 +148,7 @@ func TestInsightService_Retrieve(t *testing.T) {
 
 	want := insightSummaryResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	insightid := "my-awesome-insight"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -176,7 +176,7 @@ func TestInsightService_RetrieveVersion(t *testing.T) {
 	defer teardown()
 
 	want := InsightSummaryResponse{
-		Author: "tim-notes",
+		Author: testClientOwner,
 		Body: InsightBody{
 			ImageURL: "https://www.link.to.image.com/img.jpg",
 		},
@@ -187,7 +187,7 @@ func TestInsightService_RetrieveVersion(t *testing.T) {
 		Version: "some.version.identifier",
 	}
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	insightid := "my-awesome-insight"
 	versionid := "some.version.identifier"
@@ -220,7 +220,7 @@ func TestProjectService_UpdateInsight(t *testing.T) {
 	body := InsightUpdateRequest{
 		Title: "My Awesome Insight 2.0",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	insightid := "my-awesome-insight"
 

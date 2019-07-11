@@ -26,7 +26,7 @@ type DatasetService struct {
 	client *Client
 }
 
-func (s *DatasetService) AddFilesFromURLs(owner, datasetid string, body *FileCreateRequest) (
+func (s *DatasetService) AddFilesFromURLs(owner, datasetid string, body *[]FileCreateRequest) (
 	response SuccessResponse, err error) {
 	return s.client.File.AddFilesFromURLs(owner, datasetid, body)
 }

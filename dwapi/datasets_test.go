@@ -37,7 +37,7 @@ func TestDatasetService_Create(t *testing.T) {
 		Title:      "My Awesome Dataset",
 		Visibility: "OPEN",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
@@ -63,7 +63,7 @@ func TestDatasetService_CreateOrReplace(t *testing.T) {
 		Title:      "My Awesome Dataset",
 		Visibility: "OPEN",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, PUT, "Expected method 'PUT', got %s", r.Method)
@@ -85,7 +85,7 @@ func TestDatasetService_Delete(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, DELETE, "Expected method 'DELETE', got %s", r.Method)
@@ -107,7 +107,7 @@ func TestDatasetService_Retrieve(t *testing.T) {
 
 	want := datasetSummaryResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -138,7 +138,7 @@ func TestDatasetService_RetrieveVersion(t *testing.T) {
 
 	want := datasetSummaryResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	versionid := "some.version.identifier"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -170,7 +170,7 @@ func TestDatasetService_Sync(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -196,7 +196,7 @@ func TestDatasetService_Update(t *testing.T) {
 		Title:      "My Awesome Dataset 2.0",
 		Visibility: "PRIVATE",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 
 	handler := func(w http.ResponseWriter, r *http.Request) {

@@ -37,7 +37,7 @@ func TestQueryService_CreateSavedQueryInDataset(t *testing.T) {
 		Language:  "SQL",
 		Published: true,
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
@@ -72,7 +72,7 @@ func TestQueryService_CreateSavedQueryInProject(t *testing.T) {
 		Language:  "SQL",
 		Published: true,
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-project"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
@@ -101,7 +101,7 @@ func TestDatasetService_DeleteSavedQueryInDataset(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	queryid := "my-saved-query"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -124,7 +124,7 @@ func TestDatasetService_DeleteSavedQueryInProject(t *testing.T) {
 
 	want := successResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-dataset"
 	queryid := "my-saved-query"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -147,7 +147,7 @@ func TestQueryService_ListQueriesAssociatedWithDataset(t *testing.T) {
 
 	want := querySummaryResponses
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -179,7 +179,7 @@ func TestQueryService_ListQueriesAssociatedWithProject(t *testing.T) {
 
 	want := querySummaryResponses
 
-	owner := client.Owner
+	owner := testClientOwner
 	projectid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -211,7 +211,7 @@ func TestQueryService_Retrieve(t *testing.T) {
 
 	want := querySummaryResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	queryid := "query.id"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
@@ -240,7 +240,7 @@ func TestQueryService_RetrieveVersion(t *testing.T) {
 
 	want := querySummaryResponse
 
-	owner := client.Owner
+	owner := testClientOwner
 	queryid := "query.id"
 	versionid := "some.version.identified"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -274,7 +274,7 @@ func TestQueryService_UpdateSavedQueryInDataset(t *testing.T) {
 		Name:    "Metadata",
 		Content: "SELECT * FROM Table",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	queryid := "unique.id"
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -308,7 +308,7 @@ func TestQueryService_UpdateSavedQueryInProject(t *testing.T) {
 		Name:    "Metadata",
 		Content: "SELECT * FROM Table",
 	}
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	queryid := "unique.id"
 	handler := func(w http.ResponseWriter, r *http.Request) {

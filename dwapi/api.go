@@ -47,7 +47,6 @@ const (
 
 type Client struct {
 	BaseURL string
-	Owner   string
 	Token   string
 
 	Dataset *DatasetService
@@ -74,10 +73,9 @@ type paginatedResponse struct {
 	Records       []interface{} `json:"records"`
 }
 
-func NewClient(owner, token string) *Client {
+func NewClient(token string) *Client {
 	c := &Client{
 		BaseURL: defaultBaseURL,
-		Owner:   owner,
 		Token:   token,
 	}
 	c.Dataset = &DatasetService{c}
@@ -135,8 +133,7 @@ func (c *Client) rawRequest(headers *headers, body io.Reader) (io.ReadCloser, er
 	if err != nil {
 		return nil, err
 	}
-
-	if response.StatusCode != http.StatusOK {
+	if string(response.Status[0]) != "2" {
 		return nil, errors.New(response.Status)
 	}
 	return response.Body, nil

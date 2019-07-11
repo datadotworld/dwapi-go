@@ -30,10 +30,12 @@ var (
 	client *Client
 	mux    *http.ServeMux
 	server *httptest.Server
+
+	testClientOwner = "tim-notes"
 )
 
 var datasetSummaryResponse = DatasetSummaryResponse{
-	Owner:       "tim-notes",
+	Owner:       testClientOwner,
 	ID:          "my-awesome-dataset",
 	Title:       "My Awesome Dataset",
 	Visibility:  "OPEN",
@@ -50,7 +52,7 @@ var datasetSummaryResponses = []DatasetSummaryResponse{
 }
 
 var insightSummaryResponse = InsightSummaryResponse{
-	Author: "tim-notes",
+	Author: testClientOwner,
 	Body: InsightBody{
 		ImageURL: "https://www.link.to.image.com/img.jpg",
 	},
@@ -66,7 +68,7 @@ var insightSummaryResponses = []InsightSummaryResponse{
 }
 
 var projectSummaryResponse = ProjectSummaryResponse{
-	Owner:       "tim-notes",
+	Owner:       testClientOwner,
 	ID:          "my-awesome-project",
 	Title:       "My Awesome Project",
 	Visibility:  "OPEN",
@@ -82,7 +84,7 @@ var projectSummaryResponses = []ProjectSummaryResponse{
 }
 
 var querySummaryResponse = QuerySummaryResponse{
-	Owner:    "tim-notes",
+	Owner:    testClientOwner,
 	ID:       "unique.id",
 	Name:     "Metadata",
 	Body:     "SELECT * FROM Tables",
@@ -109,7 +111,7 @@ var subscriptionSummaryResponses = []Subscription{
 }
 
 func getTestClient() *Client {
-	return NewClient("tim-notes", "secret.token")
+	return NewClient("secret.token")
 }
 
 func setup() {
@@ -135,7 +137,7 @@ func TestClient_RequestMultiplePages(t *testing.T) {
 
 	want := datasetSummaryResponses
 
-	owner := client.Owner
+	owner := testClientOwner
 	datasetid := "my-awesome-dataset"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
