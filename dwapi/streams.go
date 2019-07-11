@@ -35,10 +35,10 @@ func (s *StreamService) Append(owner, id, streamid string, body io.Reader) (resp
 	if err != nil {
 		return
 	}
-
-	err = s.client.unmarshal(r, &response)
 	r.Close()
-	return
+	return SuccessResponse{
+		Message: "Accepted",
+	}, nil
 }
 
 func (s *StreamService) Delete(owner, id, streamid string) (response SuccessResponse, err error) {

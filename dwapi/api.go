@@ -133,8 +133,7 @@ func (c *Client) rawRequest(headers *headers, body io.Reader) (io.ReadCloser, er
 	if err != nil {
 		return nil, err
 	}
-
-	if response.StatusCode != http.StatusOK {
+	if string(response.Status[0]) != "2" {
 		return nil, errors.New(response.Status)
 	}
 	return response.Body, nil
