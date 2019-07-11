@@ -31,7 +31,9 @@ func TestStreamService_Append(t *testing.T) {
 	setup()
 	defer teardown()
 
-	want := successResponse
+	want := SuccessResponse{
+		Message: "Accepted",
+	}
 
 	type Language struct {
 		Name string
@@ -64,9 +66,6 @@ func TestStreamService_Append(t *testing.T) {
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
-		fmt.Fprintf(w, `{
-			"message": "test.message"
-		}`)
 	}
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s", owner, id, streamid)
 	mux.HandleFunc(endpoint, handler)
