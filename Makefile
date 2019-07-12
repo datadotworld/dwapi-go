@@ -1,5 +1,5 @@
 PKG_NAME=dwapi
-COVERAGE_FILE=/tmp/dwapi.cov
+COVERAGE_FILE=dwapi.cov
 
 fmt:
 	gofmt -s -w ./$(PKG_NAME)
