@@ -25,6 +25,8 @@ type UserService struct {
 	client *Client
 }
 
+// DatasetsContributing lists the datasets that the currently authenticated user has access to
+// because they are a contributor.
 func (s *UserService) DatasetsContributing() (response []DatasetSummaryResponse, err error) {
 	endpoint := "/user/datasets/contributing"
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
@@ -33,6 +35,7 @@ func (s *UserService) DatasetsContributing() (response []DatasetSummaryResponse,
 	return
 }
 
+// DatasetsLiked lists the datasets that the currently authenticated user has liked (bookmarked).
 func (s *UserService) DatasetsLiked() (response []DatasetSummaryResponse, err error) {
 	endpoint := "/user/datasets/liked"
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
@@ -41,6 +44,8 @@ func (s *UserService) DatasetsLiked() (response []DatasetSummaryResponse, err er
 	return
 }
 
+// DatasetsOwned lists the datasets that the currently authenticated user has access to
+// because they are the owner.
 func (s *UserService) DatasetsOwned() (response []DatasetSummaryResponse, err error) {
 	endpoint := "/user/datasets/own"
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
@@ -49,6 +54,8 @@ func (s *UserService) DatasetsOwned() (response []DatasetSummaryResponse, err er
 	return
 }
 
+// ProjectsContributing lists the projects that the currently authenticated user has access to
+// because they are a contributor.
 func (s *UserService) ProjectsContributing() (response []ProjectSummaryResponse, err error) {
 	endpoint := "/user/projects/contributing"
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
@@ -57,6 +64,7 @@ func (s *UserService) ProjectsContributing() (response []ProjectSummaryResponse,
 	return
 }
 
+// ProjectsLiked lists the projects that the currently authenticated user has liked (bookmarked).
 func (s *UserService) ProjectsLiked() (response []ProjectSummaryResponse, err error) {
 	endpoint := "/user/projects/liked"
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
@@ -65,6 +73,8 @@ func (s *UserService) ProjectsLiked() (response []ProjectSummaryResponse, err er
 	return
 }
 
+// ProjectsOwned lists the datasets that the currently authenticated user has access to
+// because they are the owner.
 func (s *UserService) ProjectsOwned() (response []ProjectSummaryResponse, err error) {
 	endpoint := "/user/projects/own"
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
@@ -73,6 +83,7 @@ func (s *UserService) ProjectsOwned() (response []ProjectSummaryResponse, err er
 	return
 }
 
+// Retrieve the user profile information for the specified account.
 func (s *UserService) Retrieve(agentid string) (response UserInfoResponse, err error) {
 	endpoint := fmt.Sprintf("/users/%s", agentid)
 	headers := s.client.buildHeaders(GET, endpoint)
@@ -80,6 +91,7 @@ func (s *UserService) Retrieve(agentid string) (response UserInfoResponse, err e
 	return
 }
 
+// Self retrieves the user profile information of the currently authenticated user.
 func (s *UserService) Self() (response UserInfoResponse, err error) {
 	endpoint := "/user"
 	headers := s.client.buildHeaders(GET, endpoint)

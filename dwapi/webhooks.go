@@ -25,6 +25,7 @@ type WebhookService struct {
 	client *Client
 }
 
+// List the webhook subscriptions associated with the currently authenticated user.
 func (s *WebhookService) List() (response []Subscription, err error) {
 	endpoint := "/user/webhooks"
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
@@ -33,6 +34,8 @@ func (s *WebhookService) List() (response []Subscription, err error) {
 	return
 }
 
+// RetrieveAccountSubscription fetches the webhook subscription associated with the currently
+// authenticated user and to the given organization or user account.
 func (s *WebhookService) RetrieveAccountSubscription(user string) (response Subscription, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/users/%s", user)
 	headers := s.client.buildHeaders(GET, endpoint)
@@ -40,6 +43,8 @@ func (s *WebhookService) RetrieveAccountSubscription(user string) (response Subs
 	return
 }
 
+// RetrieveDatasetSubscription fetches the webhook subscription associated with the currently
+// authenticated user and to the given dataset.
 func (s *WebhookService) RetrieveDatasetSubscription(owner, datasetid string) (response Subscription, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/datasets/%s/%s", owner, datasetid)
 	headers := s.client.buildHeaders(GET, endpoint)
@@ -47,6 +52,8 @@ func (s *WebhookService) RetrieveDatasetSubscription(owner, datasetid string) (r
 	return
 }
 
+// RetrieveProjectSubscription fetches the webhook subscription associated with the currently
+// authenticated user and to the given project.
 func (s *WebhookService) RetrieveProjectSubscription(owner, projectid string) (response Subscription, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/projects/%s/%s", owner, projectid)
 	headers := s.client.buildHeaders(GET, endpoint)
@@ -54,6 +61,8 @@ func (s *WebhookService) RetrieveProjectSubscription(owner, projectid string) (r
 	return
 }
 
+// SubscribeToAccount creates a webhook subscription associated with the currently
+// authenticated user and to the given organization or user account.
 func (s *WebhookService) SubscribeToAccount(user string, body *SubscriptionCreateRequest) (
 	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/users/%s", user)
@@ -62,6 +71,8 @@ func (s *WebhookService) SubscribeToAccount(user string, body *SubscriptionCreat
 	return
 }
 
+// SubscribeToDataset creates a webhook subscription associated with the currently
+// authenticated user and to the given dataset.
 func (s *WebhookService) SubscribeToDataset(owner, datasetid string, body *SubscriptionCreateRequest) (
 	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/datasets/%s/%s", owner, datasetid)
@@ -70,6 +81,8 @@ func (s *WebhookService) SubscribeToDataset(owner, datasetid string, body *Subsc
 	return
 }
 
+// SubscribeToProject creates a webhook subscription associated with the currently
+// authenticated user and to the given project.
 func (s *WebhookService) SubscribeToProject(owner, projectid string, body *SubscriptionCreateRequest) (
 	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/projects/%s/%s", owner, projectid)
@@ -78,21 +91,27 @@ func (s *WebhookService) SubscribeToProject(owner, projectid string, body *Subsc
 	return
 }
 
-func (s *WebhookService) UnsubscribeToAccount(user string) (response SuccessResponse, err error) {
+// UnsubscribeFromAccount deletes a webhook subscription associated with the currently authenticated
+// user and to the given organization or user account.
+func (s *WebhookService) UnsubscribeFromAccount(user string) (response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/users/%s", user)
 	headers := s.client.buildHeaders(DELETE, endpoint)
 	err = s.client.request(headers, nil, &response)
 	return
 }
 
-func (s *WebhookService) UnsubscribeToDataset(owner, datasetid string) (response SuccessResponse, err error) {
+// UnsubscribeFromDataset deletes a webhook subscription associated with the currently authenticated
+// user and to the given dataset.
+func (s *WebhookService) UnsubscribeFromDataset(owner, datasetid string) (response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/datasets/%s/%s", owner, datasetid)
 	headers := s.client.buildHeaders(DELETE, endpoint)
 	err = s.client.request(headers, nil, &response)
 	return
 }
 
-func (s *WebhookService) UnsubscribeToProject(owner, projectid string) (response SuccessResponse, err error) {
+// UnsubscribeFromProject deletes a webhook subscription associated with the currently authenticated
+// user and to the given project.
+func (s *WebhookService) UnsubscribeFromProject(owner, projectid string) (response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/projects/%s/%s", owner, projectid)
 	headers := s.client.buildHeaders(DELETE, endpoint)
 	err = s.client.request(headers, nil, &response)
