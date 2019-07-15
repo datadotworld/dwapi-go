@@ -25,6 +25,74 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestUserService_DatasetsContributing(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := datasetSummaryResponses
+
+	owner := testClientOwner
+	datasetid := "my-awesome-dataset"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"count": 1,
+			"records": [{
+				"owner": "%s",
+				"id": "%s",
+				"title": "My Awesome Dataset",
+				"visibility": "OPEN",
+				"status": "LOADED",
+				"created": "2016-07-13T23:38:44.026Z",
+				"updated": "2018-08-03T14:56:41.777Z",
+				"isProject": false,
+				"accessLevel": "READ",
+				"version": "some.version.identifier"
+			}]
+		}`, owner, datasetid)
+	}
+	endpoint := "/user/datasets/contributing"
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.User.DatasetsContributing()
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
+func TestUserService_DatasetsLiked(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := datasetSummaryResponses
+
+	owner := testClientOwner
+	datasetid := "my-awesome-dataset"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"count": 1,
+			"records": [{
+				"owner": "%s",
+				"id": "%s",
+				"title": "My Awesome Dataset",
+				"visibility": "OPEN",
+				"status": "LOADED",
+				"created": "2016-07-13T23:38:44.026Z",
+				"updated": "2018-08-03T14:56:41.777Z",
+				"isProject": false,
+				"accessLevel": "READ",
+				"version": "some.version.identifier"
+			}]
+		}`, owner, datasetid)
+	}
+	endpoint := "/user/datasets/liked"
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.User.DatasetsLiked()
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
 func TestUserService_DatasetsOwned(t *testing.T) {
 	setup()
 	defer teardown()
@@ -59,14 +127,14 @@ func TestUserService_DatasetsOwned(t *testing.T) {
 	}
 }
 
-func TestUserService_ProjectsOwned(t *testing.T) {
+func TestUserService_ProjectsContributing(t *testing.T) {
 	setup()
 	defer teardown()
 
 	want := projectSummaryResponses
 
 	owner := testClientOwner
-	datasetid := "my-awesome-project"
+	projectid := "my-awesome-project"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
 		fmt.Fprintf(w, `{
@@ -82,7 +150,73 @@ func TestUserService_ProjectsOwned(t *testing.T) {
 				"accessLevel": "READ",
 				"version": "some.version.identifier"
 			}]
-		}`, owner, datasetid)
+		}`, owner, projectid)
+	}
+	endpoint := "/user/projects/contributing"
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.User.ProjectsContributing()
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
+func TestUserService_ProjectsLiked(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := projectSummaryResponses
+
+	owner := testClientOwner
+	projectid := "my-awesome-project"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"count": 1,
+			"records": [{
+				"owner": "%s",
+				"id": "%s",
+				"title": "My Awesome Project",
+				"visibility": "OPEN",
+				"status": "LOADED",
+				"created": "2016-07-13T23:38:44.026Z",
+				"updated": "2018-08-03T14:56:41.777Z",
+				"accessLevel": "READ",
+				"version": "some.version.identifier"
+			}]
+		}`, owner, projectid)
+	}
+	endpoint := "/user/projects/liked"
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.User.ProjectsLiked()
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
+func TestUserService_ProjectsOwned(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := projectSummaryResponses
+
+	owner := testClientOwner
+	projectid := "my-awesome-project"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"count": 1,
+			"records": [{
+				"owner": "%s",
+				"id": "%s",
+				"title": "My Awesome Project",
+				"visibility": "OPEN",
+				"status": "LOADED",
+				"created": "2016-07-13T23:38:44.026Z",
+				"updated": "2018-08-03T14:56:41.777Z",
+				"accessLevel": "READ",
+				"version": "some.version.identifier"
+			}]
+		}`, owner, projectid)
 	}
 	endpoint := "/user/projects/own"
 	mux.HandleFunc(endpoint, handler)
@@ -136,10 +270,10 @@ func TestUserService_Self(t *testing.T) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
 		fmt.Fprintf(w, `{
 			"displayName": "Tim Notes",
-			"id": "tim-notes",
+			"id": "%s",
 			"created": "2016-07-13T23:38:44.026Z",
 			"updated": "2018-08-03T14:56:41.777Z"
-		}`)
+		}`, testClientOwner)
 	}
 	mux.HandleFunc("/user", handler)
 	got, err := client.User.Self()
