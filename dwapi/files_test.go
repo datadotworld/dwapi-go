@@ -29,6 +29,38 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestFileService_AddFilesFromURLs(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := successResponse
+
+	addRequest := FileCreateRequest{
+		Name:        "my-file.csv",
+		Description: "My test file",
+		Source: FileSourceCreateOrUpdateRequest{
+			URL: "http://www.test.url/my-file.csv",
+		},
+	}
+	body := []FileCreateRequest{
+		addRequest,
+	}
+	owner := testClientOwner
+	id := "my-test-dataset"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
+		fmt.Fprintf(w, `{
+			"message": "test.message"
+		}`)
+	}
+	endpoint := fmt.Sprintf("/datasets/%s/%s/files", owner, id)
+	mux.HandleFunc(endpoint, handler)
+	got, err := client.File.AddFilesFromURLs(owner, id, &body)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+	}
+}
+
 func TestFileService_Delete(t *testing.T) {
 	setup()
 	defer teardown()
