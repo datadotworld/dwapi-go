@@ -21,13 +21,14 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	client *Client
+	dw     *Client
 	mux    *http.ServeMux
 	server *httptest.Server
 
@@ -118,8 +119,8 @@ func setup() {
 	mux = http.NewServeMux()
 	server = httptest.NewServer(mux)
 
-	client = getTestClient()
-	client.BaseURL = server.URL
+	dw = getTestClient()
+	dw.BaseURL = server.URL
 }
 
 func teardown() {
@@ -127,8 +128,22 @@ func teardown() {
 }
 
 func TestNewClient(t *testing.T) {
-	client = getTestClient()
-	assert.Equal(t, client.BaseURL, defaultBaseURL)
+	dw = getTestClient()
+	assert.NotEmpty(t, dw.BaseURL)
+	assert.Equal(t, dw.Token, "secret.token")
+}
+
+func TestGetBaseURL(t *testing.T) {
+	dw := getTestClient()
+	assert.Equal(t, dw.BaseURL, defaultBaseURL+"/v0")
+
+	_ = os.Setenv("DW_ENVIRONMENT", "sparklesquad")
+	dw = getTestClient()
+	assert.Equal(t, dw.BaseURL, "https://api.sparklesquad.data.world/v0")
+
+	_ = os.Setenv("DW_API_HOST", "http://localhost:1010")
+	dw = getTestClient()
+	assert.Equal(t, dw.BaseURL, "http://localhost:1010/v0")
 }
 
 func TestClient_RequestMultiplePages(t *testing.T) {
@@ -160,7 +175,7 @@ func TestClient_RequestMultiplePages(t *testing.T) {
 	endpoint := "/user/datasets/own"
 	var got []DatasetSummaryResponse
 	mux.HandleFunc(endpoint, handler)
-	err := client.requestMultiplePages(endpoint, &got)
+	err := dw.requestMultiplePages(endpoint, &got)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -174,6 +189,6 @@ func TestClient_buildHeaders(t *testing.T) {
 		Method:   "GET",
 		Endpoint: "/an/endpoint",
 	}
-	got := client.buildHeaders(GET, "/an/endpoint")
+	got := dw.buildHeaders(GET, "/an/endpoint")
 	assert.Equal(t, want, got)
 }

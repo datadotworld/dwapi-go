@@ -47,7 +47,7 @@ func TestDatasetService_Create(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s", owner)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Dataset.Create(owner, &body)
+	got, err := dw.Dataset.Create(owner, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -73,7 +73,7 @@ func TestDatasetService_CreateOrReplace(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Dataset.CreateOrReplace(owner, datasetid, &body)
+	got, err := dw.Dataset.CreateOrReplace(owner, datasetid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -95,7 +95,7 @@ func TestDatasetService_Delete(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Dataset.Delete(owner, datasetid)
+	got, err := dw.Dataset.Delete(owner, datasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -126,7 +126,7 @@ func TestDatasetService_Retrieve(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Dataset.Retrieve(owner, datasetid)
+	got, err := dw.Dataset.Retrieve(owner, datasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -158,7 +158,7 @@ func TestDatasetService_RetrieveVersion(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/v/%s", owner, datasetid, versionid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Dataset.RetrieveVersion(owner, datasetid, versionid)
+	got, err := dw.Dataset.RetrieveVersion(owner, datasetid, versionid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -180,7 +180,7 @@ func TestDatasetService_Sync(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/sync", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Dataset.Sync(owner, datasetid)
+	got, err := dw.Dataset.Sync(owner, datasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -207,7 +207,7 @@ func TestDatasetService_Update(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Dataset.Update(owner, datasetid, &body)
+	got, err := dw.Dataset.Update(owner, datasetid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}

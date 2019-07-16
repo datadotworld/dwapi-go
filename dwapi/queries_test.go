@@ -54,7 +54,7 @@ func TestQueryService_CreateSavedQueryInDataset(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/queries", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.CreateSavedQueryInDataset(owner, datasetid, &body)
+	got, err := dw.Query.CreateSavedQueryInDataset(owner, datasetid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -89,7 +89,7 @@ func TestQueryService_CreateSavedQueryInProject(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s/%s/queries", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.CreateSavedQueryInProject(owner, projectid, &body)
+	got, err := dw.Query.CreateSavedQueryInProject(owner, projectid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -112,7 +112,7 @@ func TestDatasetService_DeleteSavedQueryInDataset(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/queries/%s", owner, datasetid, queryid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.DeleteSavedQueryInDataset(owner, datasetid, queryid)
+	got, err := dw.Query.DeleteSavedQueryInDataset(owner, datasetid, queryid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -135,7 +135,7 @@ func TestDatasetService_DeleteSavedQueryInProject(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s/%s/queries/%s", owner, projectid, queryid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.DeleteSavedQueryInProject(owner, projectid, queryid)
+	got, err := dw.Query.DeleteSavedQueryInProject(owner, projectid, queryid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -167,7 +167,7 @@ func TestQueryService_ListQueriesAssociatedWithDataset(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/queries", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.ListQueriesAssociatedWithDataset(owner, datasetid)
+	got, err := dw.Query.ListQueriesAssociatedWithDataset(owner, datasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -199,7 +199,7 @@ func TestQueryService_ListQueriesAssociatedWithProject(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s/%s/queries", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.ListQueriesAssociatedWithProject(owner, projectid)
+	got, err := dw.Query.ListQueriesAssociatedWithProject(owner, projectid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -228,7 +228,7 @@ func TestQueryService_Retrieve(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/queries/%s", queryid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.Retrieve(queryid)
+	got, err := dw.Query.Retrieve(queryid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -258,7 +258,7 @@ func TestQueryService_RetrieveVersion(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/queries/%s/v/%s", queryid, versionid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.RetrieveVersion(queryid, versionid)
+	got, err := dw.Query.RetrieveVersion(queryid, versionid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -292,7 +292,7 @@ func TestQueryService_UpdateSavedQueryInDataset(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/queries/%s", owner, datasetid, queryid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.UpdateSavedQueryInDataset(owner, datasetid, queryid, &body)
+	got, err := dw.Query.UpdateSavedQueryInDataset(owner, datasetid, queryid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -326,7 +326,7 @@ func TestQueryService_UpdateSavedQueryInProject(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s/%s/queries/%s", owner, datasetid, queryid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Query.UpdateSavedQueryInProject(owner, datasetid, queryid, &body)
+	got, err := dw.Query.UpdateSavedQueryInProject(owner, datasetid, queryid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}

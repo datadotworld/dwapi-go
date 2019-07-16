@@ -42,7 +42,7 @@ func TestFileService_Delete(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/files/%s", owner, id, filename)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.File.Delete(owner, id, filename)
+	got, err := dw.File.Delete(owner, id, filename)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -64,7 +64,7 @@ func TestFileService_Sync(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/sync", owner, id)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.File.Sync(owner, id)
+	got, err := dw.File.Sync(owner, id)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
