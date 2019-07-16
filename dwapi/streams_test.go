@@ -21,6 +21,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"testing"
 
@@ -62,16 +63,52 @@ func TestStreamService_Append(t *testing.T) {
 	body := bytes.NewReader(b)
 	owner := testClientOwner
 	id := "my-awesome-dataset"
-	streamid := "arbitrary.file"
+	streamid := "my-stream"
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
 	}
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s", owner, id, streamid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Stream.Append(owner, id, streamid, body)
+	got, err := dw.Stream.Append(owner, id, streamid, body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
+	}
+}
+
+func ExampleStreamService_Append() {
+	type Language struct {
+		Name string
+		Year int
+		URL  string
+	}
+
+	python := Language{
+		Name: "Python",
+		Year: 1991,
+		URL:  "http://python.org",
+	}
+
+	golang := Language{
+		Name: "Go",
+		Year: 2009,
+		URL:  "http://golang.org",
+	}
+
+	l1, _ := json.Marshal(python)
+	l2, _ := json.Marshal(golang)
+
+	ls := [][]byte{l1, l2}
+	b := bytes.Join(ls, []byte("\n"))
+
+	body := bytes.NewReader(b)
+	owner := testClientOwner
+	id := "my-awesome-dataset"
+	streamid := "my-stream"
+
+	_, err := dw.Stream.Append(owner, id, streamid, body)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -83,7 +120,7 @@ func TestStreamService_Delete(t *testing.T) {
 
 	owner := testClientOwner
 	id := "my-awesome-dataset"
-	streamid := "arbitrary.file"
+	streamid := "my-stream"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, DELETE, "Expected method 'DELETE', got %s", r.Method)
 		fmt.Fprintf(w, `{
@@ -92,7 +129,7 @@ func TestStreamService_Delete(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s/records", owner, id, streamid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Stream.Delete(owner, id, streamid)
+	got, err := dw.Stream.Delete(owner, id, streamid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -109,7 +146,7 @@ func TestStreamService_RetrieveSchema(t *testing.T) {
 
 	owner := testClientOwner
 	id := "my-awesome-dataset"
-	streamid := "arbitrary.file"
+	streamid := "my-stream"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, GET, "Expected method 'GET', got %s", r.Method)
 		fmt.Fprintf(w, `{
@@ -119,7 +156,7 @@ func TestStreamService_RetrieveSchema(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s/schema", owner, id, streamid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Stream.RetrieveSchema(owner, id, streamid)
+	got, err := dw.Stream.RetrieveSchema(owner, id, streamid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -131,14 +168,14 @@ func TestStreamService_SetOrUpdateSchema(t *testing.T) {
 
 	want := successResponse
 
+	owner := testClientOwner
+	id := "my-awesome-dataset"
+	streamid := "my-stream"
 	body := StreamSchemaUpdateRequest{
 		PrimaryKeyFields: []string{"id"},
 		SequenceField:    "creation_time",
 		UpdateMethod:     "TRUNCATE",
 	}
-	owner := testClientOwner
-	id := "my-awesome-dataset"
-	streamid := "arbitrary.file"
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, PATCH, "Expected method 'PATCH', got %s", r.Method)
@@ -148,8 +185,24 @@ func TestStreamService_SetOrUpdateSchema(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s/schema", owner, id, streamid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Stream.SetOrUpdateSchema(owner, id, streamid, &body)
+	got, err := dw.Stream.SetOrUpdateSchema(owner, id, streamid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
+	}
+}
+
+func ExampleStreamService_SetOrUpdateSchema() {
+	owner := testClientOwner
+	id := "my-awesome-dataset"
+	streamid := "my-stream"
+	body := StreamSchemaUpdateRequest{
+		PrimaryKeyFields: []string{"id"},
+		SequenceField:    "creation_time",
+		UpdateMethod:     "TRUNCATE",
+	}
+
+	_, err := dw.Stream.SetOrUpdateSchema(owner, id, streamid, &body)
+	if err != nil {
+		log.Fatal(err)
 	}
 }

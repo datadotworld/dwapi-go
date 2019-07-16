@@ -53,7 +53,7 @@ func TestProjectService_Create(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s", owner)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Project.Create(owner, &body)
+	got, err := dw.Project.Create(owner, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -85,7 +85,7 @@ func TestProjectService_CreateOrReplace(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Project.CreateOrReplace(owner, projectid, &body)
+	got, err := dw.Project.CreateOrReplace(owner, projectid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -107,7 +107,7 @@ func TestProjectService_Delete(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Project.Delete(owner, projectid)
+	got, err := dw.Project.Delete(owner, projectid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -132,7 +132,7 @@ func TestProjectService_Link(t *testing.T) {
 	endpoint := fmt.Sprintf("/projects/%s/%s/linkedDatasets/%s/%s",
 		owner, projectid, linkedDatasetOwner, linkedDatasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Project.LinkDataset(owner, projectid, linkedDatasetOwner, linkedDatasetid)
+	got, err := dw.Project.LinkDataset(owner, projectid, linkedDatasetOwner, linkedDatasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -162,7 +162,7 @@ func TestProjectService_Retrieve(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Project.Retrieve(owner, projectid)
+	got, err := dw.Project.Retrieve(owner, projectid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -193,7 +193,7 @@ func TestProjectService_RetrieveVersion(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s/%s/v/%s", owner, projectid, versionid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Project.RetrieveVersion(owner, projectid, versionid)
+	got, err := dw.Project.RetrieveVersion(owner, projectid, versionid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -215,7 +215,7 @@ func TestProjectService_Sync(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/sync", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Project.Sync(owner, datasetid)
+	got, err := dw.Project.Sync(owner, datasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -240,7 +240,7 @@ func TestProjectService_Unlink(t *testing.T) {
 	endpoint := fmt.Sprintf("/projects/%s/%s/linkedDatasets/%s/%s",
 		owner, projectid, linkedDatasetOwner, linkedDatasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Project.UnlinkDataset(owner, projectid, linkedDatasetOwner, linkedDatasetid)
+	got, err := dw.Project.UnlinkDataset(owner, projectid, linkedDatasetOwner, linkedDatasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -267,7 +267,7 @@ func TestProjectService_Update(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/projects/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Project.Update(owner, projectid, &body)
+	got, err := dw.Project.Update(owner, projectid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}

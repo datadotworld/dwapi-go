@@ -53,7 +53,7 @@ func TestUserService_DatasetsOwned(t *testing.T) {
 	}
 	endpoint := "/user/datasets/own"
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.DatasetsOwned()
+	got, err := dw.User.DatasetsOwned()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -86,7 +86,7 @@ func TestUserService_ProjectsOwned(t *testing.T) {
 	}
 	endpoint := "/user/projects/own"
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.ProjectsOwned()
+	got, err := dw.User.ProjectsOwned()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -115,7 +115,7 @@ func TestUserService_Retrieve(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/users/%s", agentid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.Retrieve(agentid)
+	got, err := dw.User.Retrieve(agentid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -142,7 +142,7 @@ func TestUserService_Self(t *testing.T) {
 		}`)
 	}
 	mux.HandleFunc("/user", handler)
-	got, err := client.User.Self()
+	got, err := dw.User.Self()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}

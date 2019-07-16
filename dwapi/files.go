@@ -114,6 +114,23 @@ func (s *FileService) Sync(owner, id string) (response SuccessResponse, err erro
 	return
 }
 
+// Upload one file at a time to a dataset.
+func (s *FileService) Upload(owner, id, filename, path string, expandArchive bool) (
+	response SuccessResponse, err error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return
+	}
+
+	response, err = s.UploadStream(owner, id, filename, f, expandArchive)
+	if err != nil {
+		return
+	}
+
+	err = f.Close()
+	return
+}
+
 // UploadStream uploads the contents of an io.Reader to a file in a dataset.
 func (s *FileService) UploadStream(owner, id, filename string, body io.Reader, expandArchive bool) (
 	response SuccessResponse, err error) {
@@ -133,22 +150,5 @@ func (s *FileService) UploadStream(owner, id, filename string, body io.Reader, e
 
 	err = s.client.unmarshal(r, &response)
 	r.Close()
-	return
-}
-
-// Upload one file at a time to a dataset.
-func (s *FileService) Upload(owner, id, filename, path string, expandArchive bool) (
-	response SuccessResponse, err error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return
-	}
-
-	response, err = s.UploadStream(owner, id, filename, f, expandArchive)
-	if err != nil {
-		return
-	}
-
-	err = f.Close()
 	return
 }

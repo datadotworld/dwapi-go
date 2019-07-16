@@ -42,7 +42,7 @@ func TestWebhookService_List(t *testing.T) {
 	}
 	endpoint := "/user/webhooks"
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.List()
+	got, err := dw.Webhook.List()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -63,7 +63,7 @@ func TestWebhookService_RetrieveAccountSubscription(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/users/%s", user)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.RetrieveAccountSubscription(user)
+	got, err := dw.Webhook.RetrieveAccountSubscription(user)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -85,7 +85,7 @@ func TestWebhookService_RetrieveDatasetSubscription(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/datasets/%s/%s", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.RetrieveDatasetSubscription(owner, datasetid)
+	got, err := dw.Webhook.RetrieveDatasetSubscription(owner, datasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -107,7 +107,7 @@ func TestWebhookService_RetrieveProjectSubscription(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/projects/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.RetrieveProjectSubscription(owner, projectid)
+	got, err := dw.Webhook.RetrieveProjectSubscription(owner, projectid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -132,7 +132,7 @@ func TestWebhookService_SubscribeToAccount(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/users/%s", user)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.SubscribeToAccount(user, &body)
+	got, err := dw.Webhook.SubscribeToAccount(user, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -158,7 +158,7 @@ func TestWebhookService_SubscribeToDataset(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/datasets/%s/%s", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.SubscribeToDataset(owner, datasetid, &body)
+	got, err := dw.Webhook.SubscribeToDataset(owner, datasetid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -184,7 +184,7 @@ func TestWebhookService_SubscribeToProject(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/projects/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.SubscribeToProject(owner, projectid, &body)
+	got, err := dw.Webhook.SubscribeToProject(owner, projectid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -205,7 +205,7 @@ func TestWebhookService_UnsubscribeFromAccount(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/users/%s", user)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.UnsubscribeFromAccount(user)
+	got, err := dw.Webhook.UnsubscribeFromAccount(user)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -227,7 +227,7 @@ func TestWebhookService_UnsubscribeFromDataset(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/datasets/%s/%s", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.UnsubscribeFromDataset(owner, datasetid)
+	got, err := dw.Webhook.UnsubscribeFromDataset(owner, datasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -249,7 +249,7 @@ func TestWebhookService_UnsubscribeFromProject(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/projects/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Webhook.UnsubscribeFromProject(owner, projectid)
+	got, err := dw.Webhook.UnsubscribeFromProject(owner, projectid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}

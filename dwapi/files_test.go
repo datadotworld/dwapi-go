@@ -19,11 +19,33 @@ package dwapi
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func ExampleFileService_AddFilesFromURLs() {
+	owner := "dataset-owner"
+	datasetid := "my-awesome-dataset"
+	file := FileCreateRequest{
+		Name:        "my-file.csv",
+		Description: "A description for my test file.",
+		Source: FileSourceCreateOrUpdateRequest{
+			URL: "http://mysite.com/my-file.csv",
+		},
+	}
+	files := []FileCreateRequest{
+		file,
+	}
+
+	_, err := dw.File.AddFilesFromURLs(owner, datasetid, &files)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 func TestFileService_Delete(t *testing.T) {
 	setup()
@@ -42,9 +64,32 @@ func TestFileService_Delete(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/files/%s", owner, id, filename)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.File.Delete(owner, id, filename)
+	got, err := dw.File.Delete(owner, id, filename)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
+	}
+}
+
+func ExampleFileService_DownloadAndSave() {
+	owner := "dataset-owner"
+	datasetid := "my-awesome-dataset"
+	filename := "my-file.csv"
+	savePath := "./my-file.csv"
+
+	_, err := dw.File.DownloadAndSave(owner, datasetid, filename, savePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func ExampleFileService_DownloadAndSaveDataset() {
+	owner := "dataset-owner"
+	datasetid := "my-awesome-dataset"
+	savePath := "./my-file.zip"
+
+	_, err := dw.File.DownloadAndSaveDataset(owner, datasetid, savePath)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -64,8 +109,34 @@ func TestFileService_Sync(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/sync", owner, id)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.File.Sync(owner, id)
+	got, err := dw.File.Sync(owner, id)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
+	}
+}
+
+func ExampleFileService_Upload() {
+	owner := "dataset-owner"
+	datasetid := "my-awesome-dataset"
+	filename := "my-file.csv"
+	filepath := "./my-file.csv"
+
+	_, err := dw.File.Upload(owner, datasetid, filename, filepath, false)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func ExampleFileService_UploadStream() {
+	owner := "dataset-owner"
+	datasetid := "my-awesome-dataset"
+	filename := "my-file.csv"
+	s := []string{"first_name,last_name", "Abe,Marcos", "Abby,Johnson"}
+	sj := strings.Join(s, "\n")
+	body := strings.NewReader(sj)
+
+	_, err := dw.File.UploadStream(owner, datasetid, filename, body, false)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
