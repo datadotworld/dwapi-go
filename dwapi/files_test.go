@@ -55,7 +55,7 @@ func TestFileService_AddFilesFromURLs(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/files", owner, id)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.File.AddFilesFromURLs(owner, id, &body)
+	got, err := dw.File.AddFilesFromURLs(owner, id, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -78,7 +78,7 @@ func TestFileService_Delete(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/files/%s", owner, id, filename)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.File.Delete(owner, id, filename)
+	got, err := dw.File.Delete(owner, id, filename)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -99,7 +99,7 @@ func TestFileService_Download(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/file_download/%s/%s/%s", owner, id, filename)
 	mux.HandleFunc(endpoint, handler)
-	r, err := client.File.Download(owner, id, filename)
+	r, err := dw.File.Download(owner, id, filename)
 	if assert.NoError(t, err) {
 		got, _ := ioutil.ReadAll(r)
 		assert.Equal(t, want, string(got))
@@ -125,7 +125,7 @@ func TestFileService_DownloadAndSave(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/file_download/%s/%s/%s", owner, id, filename)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.File.DownloadAndSave(owner, id, filename, path)
+	got, err := dw.File.DownloadAndSave(owner, id, filename, path)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 		assert.FileExists(t, path)
@@ -153,7 +153,7 @@ func TestFileService_DownloadDataset(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/download/%s/%s", owner, id)
 	mux.HandleFunc(endpoint, handler)
-	r, err := client.File.DownloadDataset(owner, id)
+	r, err := dw.File.DownloadDataset(owner, id)
 	if assert.NoError(t, err) {
 		got, _ := ioutil.ReadAll(r)
 		assert.Equal(t, want, string(got))
@@ -179,7 +179,7 @@ func TestFileService_DownloadAndSaveDataset(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/download/%s/%s", owner, id)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.File.DownloadAndSaveDataset(owner, id, path)
+	got, err := dw.File.DownloadAndSaveDataset(owner, id, path)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 		assert.FileExists(t, path)
@@ -209,7 +209,7 @@ func TestFileService_Sync(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/sync", owner, id)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.File.Sync(owner, id)
+	got, err := dw.File.Sync(owner, id)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}

@@ -31,7 +31,7 @@ import (
 )
 
 var (
-	client *Client
+	dw     *Client
 	mux    *http.ServeMux
 	server *httptest.Server
 
@@ -122,8 +122,8 @@ func setup() {
 	mux = http.NewServeMux()
 	server = httptest.NewServer(mux)
 
-	client = getTestClient()
-	client.BaseURL = server.URL
+	dw = getTestClient()
+	dw.BaseURL = server.URL
 }
 
 func teardown() {
@@ -131,8 +131,8 @@ func teardown() {
 }
 
 func TestNewClient(t *testing.T) {
-	client = getTestClient()
-	assert.Equal(t, client.BaseURL, defaultBaseURL)
+	dw = getTestClient()
+	assert.Equal(t, dw.BaseURL, defaultBaseURL)
 }
 
 func TestClient_RequestMultiplePages(t *testing.T) {
@@ -164,7 +164,7 @@ func TestClient_RequestMultiplePages(t *testing.T) {
 	endpoint := "/user/datasets/own"
 	var got []DatasetSummaryResponse
 	mux.HandleFunc(endpoint, handler)
-	err := client.requestMultiplePages(endpoint, &got)
+	err := dw.requestMultiplePages(endpoint, &got)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -178,7 +178,7 @@ func TestClient_buildHeaders(t *testing.T) {
 		Method:   "GET",
 		Endpoint: "/an/endpoint",
 	}
-	got := client.buildHeaders(GET, "/an/endpoint")
+	got := dw.buildHeaders(GET, "/an/endpoint")
 	assert.Equal(t, want, got)
 }
 
@@ -188,7 +188,7 @@ func TestClient_saveToFile(t *testing.T) {
 
 	path := filepath.Join(os.TempDir(), "test-file")
 	s := "a test message"
-	got := client.saveToFile(path, strings.NewReader(s))
+	got := dw.saveToFile(path, strings.NewReader(s))
 	if assert.NoError(t, got) {
 		assert.FileExists(t, path)
 

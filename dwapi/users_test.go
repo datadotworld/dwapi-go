@@ -53,7 +53,7 @@ func TestUserService_DatasetsContributing(t *testing.T) {
 	}
 	endpoint := "/user/datasets/contributing"
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.DatasetsContributing()
+	got, err := dw.User.DatasetsContributing()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -87,7 +87,7 @@ func TestUserService_DatasetsLiked(t *testing.T) {
 	}
 	endpoint := "/user/datasets/liked"
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.DatasetsLiked()
+	got, err := dw.User.DatasetsLiked()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -121,7 +121,7 @@ func TestUserService_DatasetsOwned(t *testing.T) {
 	}
 	endpoint := "/user/datasets/own"
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.DatasetsOwned()
+	got, err := dw.User.DatasetsOwned()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -154,7 +154,7 @@ func TestUserService_ProjectsContributing(t *testing.T) {
 	}
 	endpoint := "/user/projects/contributing"
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.ProjectsContributing()
+	got, err := dw.User.ProjectsContributing()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -187,7 +187,7 @@ func TestUserService_ProjectsLiked(t *testing.T) {
 	}
 	endpoint := "/user/projects/liked"
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.ProjectsLiked()
+	got, err := dw.User.ProjectsLiked()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -220,7 +220,7 @@ func TestUserService_ProjectsOwned(t *testing.T) {
 	}
 	endpoint := "/user/projects/own"
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.ProjectsOwned()
+	got, err := dw.User.ProjectsOwned()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -249,7 +249,7 @@ func TestUserService_Retrieve(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/users/%s", agentid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.User.Retrieve(agentid)
+	got, err := dw.User.Retrieve(agentid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -276,7 +276,7 @@ func TestUserService_Self(t *testing.T) {
 		}`, testClientOwner)
 	}
 	mux.HandleFunc("/user", handler)
-	got, err := client.User.Self()
+	got, err := dw.User.Self()
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
