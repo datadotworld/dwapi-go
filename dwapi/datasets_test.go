@@ -19,6 +19,7 @@ package dwapi
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"testing"
 
@@ -51,6 +52,23 @@ func TestDatasetService_Create(t *testing.T) {
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
+}
+
+func ExampleDatasetService_Create() {
+	owner := "dataset-owner"
+	request := DatasetCreateRequest{
+		Title:       "My Awesome Dataset",
+		Description: "A short description",
+		Summary:     "A long description",
+		Tags:        []string{"first", "puppies and kittens"},
+		License:     "PDDL",
+		Visibility:  "PRIVATE",
+	}
+	response, err := dw.Dataset.Create(owner, &request)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Dataset URI:", response.URI)
 }
 
 func TestDatasetService_CreateOrReplace(t *testing.T) {
