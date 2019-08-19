@@ -177,7 +177,7 @@ func (s *QueryService) ExecuteSQLAndSave(owner, id, acceptType, path string, bod
 
 // ListQueries lists the saved queries associated with a dataset.
 //
-// Query definitions will be returned, not the query results. To retrieve the query results
+// Query definitions will be returned, not the query results. To retrieve the query results,
 // use `Query.ExecuteSavedQuery`.
 func (s *QueryService) ListQueriesAssociatedWithDataset(owner, datasetid string) (
 	response []QuerySummaryResponse, err error) {
@@ -190,7 +190,7 @@ func (s *QueryService) ListQueriesAssociatedWithDataset(owner, datasetid string)
 
 // ListQueries lists the saved queries associated with a project.
 //
-// Query definitions will be returned, not the query results. To retrieve the query results
+// Query definitions will be returned, not the query results. To retrieve the query results,
 // use `Query.ExecuteSavedQuery`.
 func (s *QueryService) ListQueriesAssociatedWithProject(owner, projectid string) (
 	response []QuerySummaryResponse, err error) {
@@ -203,7 +203,7 @@ func (s *QueryService) ListQueriesAssociatedWithProject(owner, projectid string)
 
 // Retrieve fetches a saved query.
 //
-// Query definitions will be returned, not the query results. To retrieve the query results
+// Query definitions will be returned, not the query results. To retrieve the query results,
 // use `Query.ExecuteSavedQuery`.
 func (s *QueryService) Retrieve(queryid string) (response QuerySummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/queries/%s", queryid)
@@ -214,7 +214,7 @@ func (s *QueryService) Retrieve(queryid string) (response QuerySummaryResponse, 
 
 // RetrieveVersion fetches a version of a saved query.
 //
-// Query definitions will be returned, not the query results. To retrieve the query results
+// Query definitions will be returned, not the query results. To retrieve the query results,
 // use `Query.ExecuteSavedQuery`.
 func (s *QueryService) RetrieveVersion(queryid, versionid string) (response QuerySummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/queries/%s/v/%s", queryid, versionid)

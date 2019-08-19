@@ -34,8 +34,8 @@ func (s *WebhookService) List() (response []Subscription, err error) {
 	return
 }
 
-// RetrieveAccountSubscription fetches the webhook subscription associated with the currently
-// authenticated user and to the given organization or user account.
+// RetrieveAccountSubscription fetches the webhook subscription based on the currently
+// authenticated user and the given organization or user account.
 func (s *WebhookService) RetrieveAccountSubscription(user string) (response Subscription, err error) {
 	endpoint := fmt.Sprintf("/user/webhooks/users/%s", user)
 	headers := s.client.buildHeaders(GET, endpoint)

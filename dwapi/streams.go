@@ -80,7 +80,7 @@ func (s *StreamService) RetrieveSchema(owner, id, streamid string) (response Str
 // by sequence field value and will discard all but the last record appended for each given
 // primary key value.
 //
-//The updateMethod parameter specifies how data.world should handle existing records when the
+// The updateMethod parameter specifies how data.world should handle existing records when the
 // schema is updated. Currently, the only updateMethod supported is TRUNCATED. data.world
 // will discard all records when the schema is updated.
 func (s *StreamService) SetOrUpdateSchema(owner, id, streamid string, body *StreamSchemaUpdateRequest) (

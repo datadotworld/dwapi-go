@@ -130,7 +130,7 @@ func (s *DatasetService) Liked() (response []DatasetSummaryResponse, err error) 
 
 // ListQueries lists the saved queries associated with a dataset.
 //
-// Query definitions will be returned, not the query results. To retrieve the query results
+// Query definitions will be returned, not the query results. To retrieve the query results,
 // use `Query.ExecuteSavedQuery`.
 func (s *DatasetService) ListQueries(owner, datasetid string) (response []QuerySummaryResponse, err error) {
 	return s.client.Query.ListQueriesAssociatedWithDataset(owner, datasetid)
@@ -144,7 +144,7 @@ func (s *DatasetService) Owned() (response []DatasetSummaryResponse, err error) 
 
 // Retrieve fetches a dataset.
 //
-// The definition of will be returned, not the associated data. Use `Query.ExecuteSQL()`
+// The definition will be returned, not the associated data. Use `Query.ExecuteSQL()`
 // or `Query.ExecuteSPARQL()` to query the data. You can also download the original
 // files with `Dataset.Download` or `Dataset.DownloadFile`.
 func (s *DatasetService) Retrieve(owner, datasetid string) (response DatasetSummaryResponse, err error) {
@@ -156,7 +156,7 @@ func (s *DatasetService) Retrieve(owner, datasetid string) (response DatasetSumm
 
 // Retrieve fetches a version of a dataset.
 //
-// The definition of will be returned, not the associated data. Use `Query.ExecuteSQL()`
+// The definition will be returned, not the associated data. Use `Query.ExecuteSQL()`
 // or `Query.ExecuteSPARQL()` to query the data. You can also download the original
 // files with `Dataset.Download` or `Dataset.DownloadFile`.
 func (s *DatasetService) RetrieveVersion(owner, datasetid, versionid string) (

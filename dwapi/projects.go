@@ -118,7 +118,7 @@ func (s *ProjectService) LinkDataset(owner, projectid, linkedDatasetOwner, linke
 
 // ListQueries lists the saved queries associated with a project.
 //
-// Query definitions will be returned, not the query results. To retrieve the query results
+// Query definitions will be returned, not the query results. To retrieve the query results,
 // use `Query.ExecuteSavedQuery`.
 func (s *ProjectService) ListQueries(owner, projectid string) (response []QuerySummaryResponse, err error) {
 	return s.client.Query.ListQueriesAssociatedWithProject(owner, projectid)
@@ -132,7 +132,7 @@ func (s *ProjectService) Owned() (response []ProjectSummaryResponse, err error) 
 
 // Retrieve fetches a project.
 //
-// The definition of will be returned, not the associated data. Use `Query.ExecuteSQL()`
+// The definition will be returned, not the associated data. Use `Query.ExecuteSQL()`
 // or `Query.ExecuteSPARQL()` to query the data. You can also download the original
 // files with `Project.Download` or `Project.DownloadFile`.
 func (s *ProjectService) Retrieve(owner, projectid string) (response ProjectSummaryResponse, err error) {
@@ -144,7 +144,7 @@ func (s *ProjectService) Retrieve(owner, projectid string) (response ProjectSumm
 
 // Retrieve fetches a version of a project.
 //
-// The definition of will be returned, not the associated data. Use `Query.ExecuteSQL()`
+// The definition will be returned, not the associated data. Use `Query.ExecuteSQL()`
 // or `Query.ExecuteSPARQL()` to query the data. You can also download the original
 // files with `Project.Download` or `Project.DownloadFile`.
 func (s *ProjectService) RetrieveVersion(owner, projectid, versionid string) (
