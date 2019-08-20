@@ -292,10 +292,9 @@ func TestQueryService_ExecuteSQL(t *testing.T) {
 	owner := testClientOwner
 	id := "my-awesome-dataset"
 	acceptType := "text/csv"
-
-	_, err := dw.Query.ExecuteSQLAndSave(owner, id, acceptType, savePath, &body)
-	if err != nil {
-		log.Fatal(err)
+	body := SQLQueryRequest{
+		Query:              "SELECT * FROM Tables",
+		IncludeTableSchema: false,
 	}
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
