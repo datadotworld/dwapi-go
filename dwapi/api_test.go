@@ -19,9 +19,12 @@ package dwapi
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -191,4 +194,20 @@ func TestClient_buildHeaders(t *testing.T) {
 	}
 	got := dw.buildHeaders(GET, "/an/endpoint")
 	assert.Equal(t, want, got)
+}
+
+func TestClient_saveToFile(t *testing.T) {
+	setup()
+	defer teardown()
+
+	path := filepath.Join(os.TempDir(), "test-file")
+	s := "a test message"
+	got := dw.saveToFile(path, strings.NewReader(s))
+	if assert.NoError(t, got) {
+		assert.FileExists(t, path)
+
+		c, _ := ioutil.ReadFile(path)
+		assert.Equal(t, s, string(c))
+	}
+	_ = os.Remove(path)
 }

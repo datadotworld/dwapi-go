@@ -27,6 +27,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -106,12 +107,14 @@ func main() {
 	// upload a file
 	s := []string{"first_name,last_name", "Abe,Marcos", "Abby,Johnson"}
 	sj := strings.Join(s, "\n")
-	if err = ioutil.WriteFile("/tmp/test-file.csv", []byte(sj), 0644); err != nil {
+	testFilePath := filepath.Join(os.TempDir(), "test-file.csv")
+	if err = ioutil.WriteFile(testFilePath, []byte(sj), 0644); err != nil {
 		fmt.Fprintln(os.Stderr, "Dataset.UploadFile() returned an error while creating a file:", err)
 		os.Exit(1)
 	}
+	defer os.Remove(testFilePath)
 
-	uploadResp, err := dw.Dataset.UploadFile(owner, datasetid, "test-file.csv", "/tmp/test-file.csv", false)
+	uploadResp, err := dw.Dataset.UploadFile(owner, datasetid, "test-file.csv", testFilePath, false)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Dataset.UploadFile() returned an error:", err)
 		os.Exit(1)
