@@ -50,7 +50,7 @@ func TestInsightService_Create(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/insights/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Insight.Create(owner, projectid, &body)
+	got, err := dw.Insight.Create(owner, projectid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -74,7 +74,7 @@ func TestInsightService_Delete(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Insight.Delete(owner, projectid, insightid)
+	got, err := dw.Insight.Delete(owner, projectid, insightid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -106,7 +106,7 @@ func TestInsightService_List(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/insights/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Insight.List(owner, projectid)
+	got, err := dw.Insight.List(owner, projectid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -136,7 +136,7 @@ func TestProjectService_ReplaceInsight(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Insight.Replace(owner, projectid, insightid, &body)
+	got, err := dw.Insight.Replace(owner, projectid, insightid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -165,7 +165,7 @@ func TestInsightService_Retrieve(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Insight.Retrieve(owner, projectid, insightid)
+	got, err := dw.Insight.Retrieve(owner, projectid, insightid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -205,7 +205,7 @@ func TestInsightService_RetrieveVersion(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s/v/%s", owner, projectid, insightid, versionid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Insight.RetrieveVersion(owner, projectid, insightid, versionid)
+	got, err := dw.Insight.RetrieveVersion(owner, projectid, insightid, versionid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -232,7 +232,7 @@ func TestProjectService_UpdateInsight(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Insight.Update(owner, projectid, insightid, &body)
+	got, err := dw.Insight.Update(owner, projectid, insightid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}

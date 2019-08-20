@@ -30,6 +30,14 @@ $ cd dwapi-go
 $ git remote add upstream https://github.com/datadotworld/dwapi-go.git
 ```
 
+### Lint
+
+Run [golangci-lint](https://github.com/golangci/golangci-lint#install) to check for lint issues:
+
+```sh
+$ make lint
+```
+
 ### Test
 
 Run tests:

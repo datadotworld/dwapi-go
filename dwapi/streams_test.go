@@ -69,7 +69,7 @@ func TestStreamService_Append(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s", owner, id, streamid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Stream.Append(owner, id, streamid, body)
+	got, err := dw.Stream.Append(owner, id, streamid, body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -92,7 +92,7 @@ func TestStreamService_Delete(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s/records", owner, id, streamid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Stream.Delete(owner, id, streamid)
+	got, err := dw.Stream.Delete(owner, id, streamid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -119,7 +119,7 @@ func TestStreamService_RetrieveSchema(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s/schema", owner, id, streamid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Stream.RetrieveSchema(owner, id, streamid)
+	got, err := dw.Stream.RetrieveSchema(owner, id, streamid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -148,7 +148,7 @@ func TestStreamService_SetOrUpdateSchema(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/streams/%s/%s/%s/schema", owner, id, streamid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.Stream.SetOrUpdateSchema(owner, id, streamid, &body)
+	got, err := dw.Stream.SetOrUpdateSchema(owner, id, streamid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}

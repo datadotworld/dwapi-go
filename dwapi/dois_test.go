@@ -42,7 +42,7 @@ func TestDoiService_Associate(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/dois/%s", owner, datasetid, doi)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.DOI.Associate(owner, datasetid, doi)
+	got, err := dw.DOI.Associate(owner, datasetid, doi)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -66,7 +66,7 @@ func TestDoiService_AssociateWithVersion(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/v/%s/dois/%s", owner, datasetid, versionid, doi)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.DOI.AssociateWithVersion(owner, datasetid, versionid, doi)
+	got, err := dw.DOI.AssociateWithVersion(owner, datasetid, versionid, doi)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -90,7 +90,7 @@ func TestDoiService_DeleteAssociatedWithVersion(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/v/%s/dois/%s", owner, datasetid, versionid, doi)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.DOI.DeleteAssociatedWithVersion(owner, datasetid, versionid, doi)
+	got, err := dw.DOI.DeleteAssociatedWithVersion(owner, datasetid, versionid, doi)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
@@ -113,7 +113,7 @@ func TestDoiService_Delete(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/datasets/%s/%s/dois/%s", owner, datasetid, doi)
 	mux.HandleFunc(endpoint, handler)
-	got, err := client.DOI.Delete(owner, datasetid, doi)
+	got, err := dw.DOI.Delete(owner, datasetid, doi)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
