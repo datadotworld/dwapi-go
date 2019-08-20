@@ -16,6 +16,7 @@ go get github.com/datadotworld/dwapi-go/dwapi
 ```
 
 ## Usage
+
 The full package documentation is available at https://godoc.org/github.com/datadotworld/dwapi-go/dwapi.
 
 You can also check out the API documentation at https://apidocs.data.world/api for specifics on the endpoints.
@@ -140,3 +141,16 @@ func main() {
 	*/
 }
 ```
+
+## Changing the hostname
+
+The API calls are made to `https://api.data.world` by default, but the URL can be changed by setting the `DW_API_HOST` environment variable.
+
+For customers in a single-tenant environment, you can also use the `DW_ENVIRONMENT` variable to alter the default URL. For example, for the customer `customer`, setting it will alter the URL to `https://api.customer.data.world`.
+
+Additionally, the hostname can also be changed by explicitly setting the `BaseURL` property of the client, i.e.:
+```
+dw = dwapi.NewClient("token")
+dw.BaseURL = "http://localhost:1010/v0"
+```
+_Notice that the stage also needs to be set if going down this path._
