@@ -132,7 +132,21 @@ func teardown() {
 
 func TestNewClient(t *testing.T) {
 	dw = getTestClient()
-	assert.Equal(t, dw.BaseURL, defaultBaseURL)
+	assert.NotEmpty(t, dw.BaseURL)
+	assert.Equal(t, dw.Token, "secret.token")
+}
+
+func TestGetBaseURL(t *testing.T) {
+	dw := getTestClient()
+	assert.Equal(t, dw.BaseURL, defaultBaseURL+"/v0")
+
+	_ = os.Setenv("DW_ENVIRONMENT", "sparklesquad")
+	dw = getTestClient()
+	assert.Equal(t, dw.BaseURL, "https://api.sparklesquad.data.world/v0")
+
+	_ = os.Setenv("DW_API_HOST", "http://localhost:1010")
+	dw = getTestClient()
+	assert.Equal(t, dw.BaseURL, "http://localhost:1010/v0")
 }
 
 func TestClient_RequestMultiplePages(t *testing.T) {

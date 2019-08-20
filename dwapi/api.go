@@ -42,7 +42,7 @@ const (
 	POST   = "POST"
 	PUT    = "PUT"
 
-	defaultBaseURL = "https://api.data.world/v0"
+	defaultBaseURL = "https://api.data.world"
 )
 
 type Client struct {
@@ -75,7 +75,7 @@ type paginatedResponse struct {
 
 func NewClient(token string) *Client {
 	c := &Client{
-		BaseURL: defaultBaseURL,
+		BaseURL: getBaseURL(),
 		Token:   token,
 	}
 	c.Dataset = &DatasetService{c}
@@ -88,6 +88,16 @@ func NewClient(token string) *Client {
 	c.User = &UserService{c}
 	c.Webhook = &WebhookService{c}
 	return c
+}
+
+func getBaseURL() string {
+	baseURL := defaultBaseURL
+	if host := os.Getenv("DW_API_HOST"); host != "" {
+		baseURL = host
+	} else if env := os.Getenv("DW_ENVIRONMENT"); env != "" {
+		baseURL = fmt.Sprintf("https://api.%s.data.world", env)
+	}
+	return baseURL + "/v0"
 }
 
 func (c *Client) buildHeaders(method, endpoint string) *headers {
