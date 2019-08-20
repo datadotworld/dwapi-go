@@ -25,6 +25,7 @@ type DoiService struct {
 	client *Client
 }
 
+// Associate a DOI (Digital Object Identifier) with a dataset.
 func (s *DoiService) Associate(owner, datasetid, doi string) (response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/dois/%s", owner, datasetid, doi)
 	headers := s.client.buildHeaders(PUT, endpoint)
@@ -32,6 +33,7 @@ func (s *DoiService) Associate(owner, datasetid, doi string) (response SuccessRe
 	return
 }
 
+// AssociateWithVersion associates a DOI (Digital Object Identifier) with a version of dataset.
 func (s *DoiService) AssociateWithVersion(owner, datasetid, versionid, doi string) (
 	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/v/%s/dois/%s", owner, datasetid, versionid, doi)
@@ -40,6 +42,7 @@ func (s *DoiService) AssociateWithVersion(owner, datasetid, versionid, doi strin
 	return
 }
 
+// Delete a DOI (Digital Object Identifier) associated with a dataset.
 func (s *DoiService) Delete(owner, datasetid, doi string) (response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/dois/%s", owner, datasetid, doi)
 	headers := s.client.buildHeaders(DELETE, endpoint)
@@ -47,6 +50,7 @@ func (s *DoiService) Delete(owner, datasetid, doi string) (response SuccessRespo
 	return
 }
 
+// DeleteAssociatedWithVersion deletes a DOI (Digital Object Identifier) associated with a dataset.
 func (s *DoiService) DeleteAssociatedWithVersion(owner, datasetid, versionid, doi string) (
 	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/datasets/%s/%s/v/%s/dois/%s", owner, datasetid, versionid, doi)

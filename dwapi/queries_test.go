@@ -145,6 +145,22 @@ func TestQueryService_DeleteSavedQueryInProject(t *testing.T) {
 	}
 }
 
+func ExampleQueryService_ExecuteSQLAndSave() {
+	owner := "dataset-owner"
+	id := "my-awesome-dataset"
+	acceptType := "text/csv"
+	savePath := "./query-results.csv"
+	body := SQLQueryRequest{
+		Query:              "SELECT * FROM Tables",
+		IncludeTableSchema: false,
+	}
+
+	_, err := dw.Query.ExecuteSQLAndSave(owner, id, acceptType, savePath, &body)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func TestQueryService_ExecuteSavedQuery(t *testing.T) {
 	setup()
 	defer teardown()
@@ -499,7 +515,7 @@ func TestQueryService_UpdateSavedQueryInProject(t *testing.T) {
 		Content: "SELECT * FROM Table",
 	}
 	owner := testClientOwner
-	datasetid := "my-awesome-dataset"
+	projectid := "my-awesome-dataset"
 	queryid := "unique.id"
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, r.Method, PUT, "Expected method 'PUT', got %s", r.Method)
@@ -514,9 +530,9 @@ func TestQueryService_UpdateSavedQueryInProject(t *testing.T) {
 			"version": "some.version.identified"
 		}`, owner)
 	}
-	endpoint := fmt.Sprintf("/projects/%s/%s/queries/%s", owner, datasetid, queryid)
+	endpoint := fmt.Sprintf("/projects/%s/%s/queries/%s", owner, projectid, queryid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := dw.Query.UpdateSavedQueryInProject(owner, datasetid, queryid, &body)
+	got, err := dw.Query.UpdateSavedQueryInProject(owner, projectid, queryid, &body)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
