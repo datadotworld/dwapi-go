@@ -1,4 +1,5 @@
-.ds_store
+.DS_Store
+dwapi.cov
 main.go
 *.iml
 

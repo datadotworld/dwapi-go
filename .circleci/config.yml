@@ -1,0 +1,43 @@
+version: 2
+
+resources:
+  defaults: &defaults
+    docker:
+      - image: circleci/golang:1.12
+
+  install_golangci_lint: &install_golangci_lint
+    run:
+      name: Install golangci-lint
+      command: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.17.1
+
+  fmtcheck: &fmtcheck
+    run:
+      name: Checking for formatting issues
+      command: gofmt -l -s ./dwapi
+
+  lint: &lint
+    run:
+      name: Run the linter
+      command: golangci-lint run ./dwapi
+
+  test: &test
+    run:
+      name: Run the tests
+      command: go test ./dwapi -timeout=30s -parallel=4 -cover
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - *install_golangci_lint
+      - *fmtcheck
+      - *lint
+      - *test
+
+workflows:
+  version: 2
+
+  build:
+    jobs:
+      - build

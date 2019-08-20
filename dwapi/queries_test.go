@@ -19,8 +19,11 @@ package dwapi
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -96,7 +99,7 @@ func TestQueryService_CreateSavedQueryInProject(t *testing.T) {
 	}
 }
 
-func TestDatasetService_DeleteSavedQueryInDataset(t *testing.T) {
+func TestQueryService_DeleteSavedQueryInDataset(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -119,7 +122,7 @@ func TestDatasetService_DeleteSavedQueryInDataset(t *testing.T) {
 	}
 }
 
-func TestDatasetService_DeleteSavedQueryInProject(t *testing.T) {
+func TestQueryService_DeleteSavedQueryInProject(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -156,6 +159,193 @@ func ExampleQueryService_ExecuteSQLAndSave() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func TestQueryService_ExecuteSavedQuery(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := "test content"
+
+	queryid := "my-saved-query"
+	acceptType := "text/csv"
+	body := SavedQueryExecutionRequest{
+		IncludeTableSchema: false,
+	}
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
+		fmt.Fprintf(w, `test content`)
+	}
+	endpoint := fmt.Sprintf("/queries/%s/results", queryid)
+	mux.HandleFunc(endpoint, handler)
+	r, err := dw.Query.ExecuteSavedQuery(queryid, acceptType, &body)
+	if assert.NoError(t, err) {
+		got, _ := ioutil.ReadAll(r)
+		assert.Equal(t, want, string(got))
+	}
+	r.Close()
+}
+
+func TestQueryService_ExecuteSavedQueryAndSave(t *testing.T) {
+	setup()
+	defer teardown()
+
+	filename := "test-file"
+	path := filepath.Join(os.TempDir(), filename)
+	want := SuccessResponse{
+		fmt.Sprintf("Results saved to %s", path),
+	}
+
+	queryid := "my-saved-query"
+	acceptType := "text/csv"
+	body := SavedQueryExecutionRequest{
+		IncludeTableSchema: false,
+	}
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
+		fmt.Fprintf(w, `test content`)
+	}
+	endpoint := fmt.Sprintf("/queries/%s/results", queryid)
+	mux.HandleFunc(endpoint, handler)
+	got, err := dw.Query.ExecuteSavedQueryAndSave(queryid, acceptType, path, &body)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+		assert.FileExists(t, path)
+
+		c, err := ioutil.ReadFile(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		assert.Equal(t, "test content", string(c))
+	}
+	_ = os.Remove(path)
+}
+
+func TestQueryService_ExecuteSPARQL(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := "test content"
+
+	owner := testClientOwner
+	id := "my-awesome-dataset"
+	acceptType := "text/turtle"
+	body := SPARQLQueryRequest{
+		Query: "test SPARQL query",
+	}
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
+		fmt.Fprintf(w, `test content`)
+	}
+	endpoint := fmt.Sprintf("/sparql/%s/%s", owner, id)
+	mux.HandleFunc(endpoint, handler)
+	r, err := dw.Query.ExecuteSPARQL(owner, id, acceptType, &body)
+	if assert.NoError(t, err) {
+		got, _ := ioutil.ReadAll(r)
+		assert.Equal(t, want, string(got))
+	}
+	r.Close()
+}
+
+func TestQueryService_ExecuteSPARQLAndSaveService(t *testing.T) {
+	setup()
+	defer teardown()
+
+	filename := "test-file"
+	path := filepath.Join(os.TempDir(), filename)
+	want := SuccessResponse{
+		fmt.Sprintf("Results saved to %s", path),
+	}
+
+	owner := testClientOwner
+	id := "my-awesome-dataset"
+	acceptType := "text/turtle"
+	body := SPARQLQueryRequest{
+		Query: "test SPARQL query",
+	}
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
+		fmt.Fprintf(w, `test content`)
+	}
+	endpoint := fmt.Sprintf("/sparql/%s/%s", owner, id)
+	mux.HandleFunc(endpoint, handler)
+	got, err := dw.Query.ExecuteSPARQLAndSave(owner, id, acceptType, path, &body)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+		assert.FileExists(t, path)
+
+		c, err := ioutil.ReadFile(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		assert.Equal(t, "test content", string(c))
+	}
+	_ = os.Remove(path)
+}
+
+func TestQueryService_ExecuteSQL(t *testing.T) {
+	setup()
+	defer teardown()
+
+	want := "test content"
+
+	owner := testClientOwner
+	id := "my-awesome-dataset"
+	acceptType := "text/csv"
+
+	_, err := dw.Query.ExecuteSQLAndSave(owner, datasetid, acceptType, savePath, &body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
+		fmt.Fprintf(w, `test content`)
+	}
+	endpoint := fmt.Sprintf("/sql/%s/%s", owner, id)
+	mux.HandleFunc(endpoint, handler)
+	r, err := dw.Query.ExecuteSQL(owner, id, acceptType, &body)
+	if assert.NoError(t, err) {
+		got, _ := ioutil.ReadAll(r)
+		assert.Equal(t, want, string(got))
+	}
+	r.Close()
+}
+
+func TestQueryService_ExecuteSQLAndSave(t *testing.T) {
+	setup()
+	defer teardown()
+
+	filename := "test-file"
+	path := filepath.Join(os.TempDir(), filename)
+	want := SuccessResponse{
+		fmt.Sprintf("Results saved to %s", path),
+	}
+
+	owner := testClientOwner
+	id := "my-awesome-dataset"
+	acceptType := "text/csv"
+	body := SQLQueryRequest{
+		Query:              "SELECT * FROM Tables",
+		IncludeTableSchema: false,
+	}
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, r.Method, POST, "Expected method 'POST', got %s", r.Method)
+		fmt.Fprintf(w, `test content`)
+	}
+	endpoint := fmt.Sprintf("/sql/%s/%s", owner, id)
+	mux.HandleFunc(endpoint, handler)
+	got, err := dw.Query.ExecuteSQLAndSave(owner, id, acceptType, path, &body)
+	if assert.NoError(t, err) {
+		assert.Equal(t, want, got)
+		assert.FileExists(t, path)
+
+		c, err := ioutil.ReadFile(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		assert.Equal(t, "test content", string(c))
+	}
+	_ = os.Remove(path)
 }
 
 func TestQueryService_ListQueriesAssociatedWithDataset(t *testing.T) {
