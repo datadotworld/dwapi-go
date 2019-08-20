@@ -25,6 +25,7 @@ type InsightService struct {
 	client *Client
 }
 
+// Create a new insight.
 func (s *InsightService) Create(owner, projectid string, body *InsightCreateRequest) (
 	response InsightCreateResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s", owner, projectid)
@@ -33,6 +34,7 @@ func (s *InsightService) Create(owner, projectid string, body *InsightCreateRequ
 	return
 }
 
+// Delete an insight.
 func (s *InsightService) Delete(owner, projectid, insightid string) (response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)
 	headers := s.client.buildHeaders(DELETE, endpoint)
@@ -40,6 +42,7 @@ func (s *InsightService) Delete(owner, projectid, insightid string) (response Su
 	return
 }
 
+// List insights associated with a project.
 func (s *InsightService) List(owner, projectid string) (response []InsightSummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s", owner, projectid)
 	if err = s.client.requestMultiplePages(endpoint, &response); err != nil {
@@ -48,6 +51,7 @@ func (s *InsightService) List(owner, projectid string) (response []InsightSummar
 	return
 }
 
+// Replace an insight.
 func (s *InsightService) Replace(owner, projectid, insightid string, body *InsightReplaceRequest) (
 	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)
@@ -56,6 +60,7 @@ func (s *InsightService) Replace(owner, projectid, insightid string, body *Insig
 	return
 }
 
+// Retrieve fetches an insight.
 func (s *InsightService) Retrieve(owner, projectid, insightid string) (response InsightSummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)
 	headers := s.client.buildHeaders(GET, endpoint)
@@ -63,6 +68,7 @@ func (s *InsightService) Retrieve(owner, projectid, insightid string) (response 
 	return
 }
 
+// RetrieveVersion fetches a version of an insight.
 func (s *InsightService) RetrieveVersion(owner, projectid, insightid, versionid string) (
 	response InsightSummaryResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s/v/%s", owner, projectid, insightid, versionid)
@@ -71,6 +77,10 @@ func (s *InsightService) RetrieveVersion(owner, projectid, insightid, versionid 
 	return
 }
 
+// Update an insight.
+//
+// Note that only elements included in the request will be updated. All omitted elements will
+// remain untouched.
 func (s *InsightService) Update(owner, projectid, insightid string, body *InsightUpdateRequest) (
 	response SuccessResponse, err error) {
 	endpoint := fmt.Sprintf("/insights/%s/%s/%s", owner, projectid, insightid)

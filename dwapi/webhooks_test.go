@@ -190,7 +190,7 @@ func TestWebhookService_SubscribeToProject(t *testing.T) {
 	}
 }
 
-func TestWebhookService_UnsubscribeToAccount(t *testing.T) {
+func TestWebhookService_UnsubscribeFromAccount(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -205,13 +205,13 @@ func TestWebhookService_UnsubscribeToAccount(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/users/%s", user)
 	mux.HandleFunc(endpoint, handler)
-	got, err := dw.Webhook.UnsubscribeToAccount(user)
+	got, err := dw.Webhook.UnsubscribeFromAccount(user)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
 }
 
-func TestWebhookService_UnsubscribeToDataset(t *testing.T) {
+func TestWebhookService_UnsubscribeFromDataset(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -227,13 +227,13 @@ func TestWebhookService_UnsubscribeToDataset(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/datasets/%s/%s", owner, datasetid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := dw.Webhook.UnsubscribeToDataset(owner, datasetid)
+	got, err := dw.Webhook.UnsubscribeFromDataset(owner, datasetid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
 }
 
-func TestWebhookService_UnsubscribeToProject(t *testing.T) {
+func TestWebhookService_UnsubscribeFromProject(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -249,7 +249,7 @@ func TestWebhookService_UnsubscribeToProject(t *testing.T) {
 	}
 	endpoint := fmt.Sprintf("/user/webhooks/projects/%s/%s", owner, projectid)
 	mux.HandleFunc(endpoint, handler)
-	got, err := dw.Webhook.UnsubscribeToProject(owner, projectid)
+	got, err := dw.Webhook.UnsubscribeFromProject(owner, projectid)
 	if assert.NoError(t, err) {
 		assert.Equal(t, want, got)
 	}
