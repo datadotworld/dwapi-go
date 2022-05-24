@@ -121,7 +121,7 @@ type FileSummaryResponse struct {
 	Description string             `json:"description,omitempty"`
 	Labels      []string           `json:"labels,omitempty"`
 	Name        string             `json:"name"`
-	SizeInBytes int                `json:"sizeInBytes,omitempty"`
+	SizeInBytes uint               `json:"sizeInBytes,omitempty"`
 	Source      FileSourceResponse `json:"source,omitempty"`
 	Updated     string             `json:"updated"`
 }
